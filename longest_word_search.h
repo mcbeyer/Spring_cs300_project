@@ -9,8 +9,8 @@
 
 typedef struct prefixbuf {
 	long mtype;
-  int id;
-  char prefix[WORD_LENGTH];
+	int id;
+	char prefix[WORD_LENGTH];
 
 } prefix_buf;
 
