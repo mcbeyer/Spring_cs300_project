@@ -24,20 +24,31 @@ class Worker extends Thread{
     this.passageName="Passage-"+Integer.toString(id)+".txt";//put name of passage here
   }
 
-  public ArrayList<String> parse(String path) {
+  public static ArrayList<String> parsePassage(String path) {
     /**
      * open the path file
      * make regex scanner
      * put things in array, separated by the scanner
      * throw out anything <3 or with an ' or -
      */
+    String testing;
+    ArrayList<String> okWords = new ArrayList<String>();
 
     try {
-      Scanner word = new Scanner(new File(path));
-      word.useDelimiter("[^a-zA-Z\'-]");
+        Scanner word = new Scanner(new File(path));
+        word.useDelimiter("[^a-zA-Z\'-]");
+        while (word.hasNext()) {
+            testing = word.next();
+            if (testing.length() < 3)
+                continue;
+            
+            if ((testing.contains("\'")) || (testing.contains("-"))
+                continue;
 
+            okWords.add(testing);
+        }
     }  catch (Exception e) {};
-    return null;  //jank
+    return okWords;
   }
 
   public void run() {

@@ -12,18 +12,27 @@ public class test {
          * put things in array, separated by the scanner
          * throw out anything <3 or with an ' or -
          */
+        String testing;
+        ArrayList<String> okWords = new ArrayList<String>();
 
         try {
             Scanner word = new Scanner(new File(path));
             word.useDelimiter("[^a-zA-Z\'-]");
             while (word.hasNext()) {
-                System.out.println(word.next());
+                testing = word.next();
+                if (testing.length() < 3)
+                    continue;
+                
+                if ((testing.contains("\'")) || (testing.contains("-"))
+                    continue;
+
+                okWords.add(testing);
             }
         }  catch (Exception e) {};
-        return null;  //jank
+        return okWords;
     }
 
-    public static void main() {
+    public static void main(String[] args) {
         parse("Little_Women.txt");
     }
 }
