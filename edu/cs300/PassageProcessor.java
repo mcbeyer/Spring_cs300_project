@@ -55,6 +55,13 @@ public class PassageProcessor {
                  workers[i].add(tempprefix);
              }
 
+             tempprefix = "pre";
+
+             //give workers the prefix
+             for (int i=0; i<workers.length; i++) {
+                 workers[i].add(tempprefix);
+             }
+
              //give results (in results array) back to SearchManager
              String sendBack;
              String wID;
