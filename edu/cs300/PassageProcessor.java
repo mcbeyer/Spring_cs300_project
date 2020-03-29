@@ -56,7 +56,6 @@ public class PassageProcessor {
                  }
                  else if (prefixCount == 1) {
                      prefix = "pre";
-                     System.out.println("hi");
                  }
                  else prefix = "-1";
 
@@ -65,7 +64,6 @@ public class PassageProcessor {
 
                  //give workers the prefix
                  for (int i=0; i<workers.length; i++) {
-                     System.out.println("got to workers");
                      workers[i].add(prefix);
                  }
 
@@ -75,6 +73,7 @@ public class PassageProcessor {
             
                  for (int i=0; i<paths.size(); i++) {
                      wID = "";
+                     System.out.println("about to take");
                      sendBack = results.take();
                      System.out.println(sendBack);
 
