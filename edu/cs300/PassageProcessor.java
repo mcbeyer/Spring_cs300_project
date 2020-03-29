@@ -44,7 +44,7 @@ public class PassageProcessor {
              //starts the trie creation
              for (int i=0; i<paths.size(); i++) {
                  workers[i] = new ArrayBlockingQueue<String>(1);
-                 new Worker("../../"+paths.get(i), i, workers[i], results).start();
+                 new Worker(paths.get(i), i, workers[i], results).start();
              }
 
              //to be fixed later
