@@ -62,12 +62,9 @@ public class PassageProcessor {
 
                  if (prefix.length() < 3) break;
 
-                 //to be fixed later
-                 String tempprefix = "con";
-
                  //give workers the prefix
                  for (int i=0; i<workers.length; i++) {
-                     workers[i].add(tempprefix);
+                     workers[i].add(prefix);
                  }
 
                  //give results (in results array) back to SearchManager
