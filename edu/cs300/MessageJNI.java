@@ -25,6 +25,6 @@ public class MessageJNI {
 
     public static native SearchRequest readPrefixRequestMsg();
 
-    public static native void writeLongestWordResponseMsg( int prefixID, String prefix, int passageIndex, String passageName,String longestWord, int passageCount, int present);
+    public static native void writeLongestWordResponseMsg(int prefixID, String prefix, int passageIndex, String passageName,String longestWord, int passageCount, int present);
 
 }

@@ -15,6 +15,7 @@ class Worker extends Thread{
   int id;
   String passageName;
   String path;
+  int prefixCount;
 
   public Worker(String path,int id,ArrayBlockingQueue<String> prefix, ArrayBlockingQueue<String> results){
     // this.textTrieTree=new Trie(words);
@@ -24,6 +25,7 @@ class Worker extends Thread{
     this.id=id;
     this.passageName="Passage-"+Integer.toString(id)+".txt";//put name of passage here
     this.path=path;
+    this.prefixCount=0;
   }
 
   public static ArrayList<String> parsePassage(String path) {
@@ -59,14 +61,21 @@ class Worker extends Thread{
     //while (true){
       try {
         String prefix=(String)this.prefixRequestArray.take();
+
+        //kill the worker with a prefix <3
+        if (prefix.length() < 3) {
+          return;
+        }
+
+        this.prefixCount++;
         boolean found = this.textTrieTree.contains(prefix);
         
         if (!found){
           //System.out.println("Worker-"+this.id+" "+req.requestID+":"+ prefix+" ==> not found ");
-          resultsOutputArray.put(passageName+":"+prefix+" not found");
+          resultsOutputArray.put("Worker-" + this.id + this.prefixCount + ":" + prefix + " ==> not found");
         } else{
           //System.out.println("Worker-"+this.id+" "+req.requestID+":"+ prefix+" ==> "+word);
-          resultsOutputArray.put(passageName+":"+prefix+" found");
+          resultsOutputArray.put("Worker-" + this.id + this.prefixCount + ":" + prefix + " ==> " + this.textTrieTree.plss(prefix));
         }
       } catch(InterruptedException e){
         System.out.println(e.getMessage());

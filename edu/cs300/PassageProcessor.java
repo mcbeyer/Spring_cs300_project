@@ -25,7 +25,7 @@ public class PassageProcessor {
          */
 
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
-         ArrayBlockingQueue results = new ArrayBlockingQueue<>(10*100);
+        
          ArrayList<String> paths = new ArrayList<String>();
 
 
@@ -38,11 +38,38 @@ public class PassageProcessor {
                  paths.add(line);
              }
 
-             ArrayBlockingQueue[] workers = new ArrayBlockingQueue[paths.size()];
+             ArrayBlockingQueue<String> results = new ArrayBlockingQueue<String>(paths.size()*10);
+             ArrayBlockingQueue<String>[] workers = new ArrayBlockingQueue[paths.size()];
              
+             //starts the trie creation
              for (int i=0; i<paths.size(); i++) {
-                 workers[i] = new ArrayBlockingQueue(10);
+                 workers[i] = new ArrayBlockingQueue<String>(1);
                  new Worker("../../"+paths.get(i), i, workers[i], results).start();
+             }
+
+             //to be fixed later
+             String tempprefix = "con";
+
+             //give workers the prefix
+             for (int i=0; i<workers.length; i++) {
+                 workers[i].add(tempprefix);
+             }
+
+             //done with prefixes now
+             String killer = "0";
+             for (int i=0; i<workers.length; i++) {
+                workers[i].add(killer);
+             }
+
+             //give results (in results array) back to SearchManager
+             String sendBack;
+             String wID = "";
+             sendBack = results.take();
+
+             //parse out worker id number
+             for (char c : sendBack.toCharArray()) {
+                 if (Character.isDigit(c))
+                    wID = wID + Character.toString(c);
              }
 
          }  catch (Exception e) {};
