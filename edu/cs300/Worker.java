@@ -58,7 +58,7 @@ class Worker extends Thread{
   public void run() {
     System.out.println("Worker-"+this.id+" ("+this.passageName+") thread started ...");
     this.textTrieTree = new Trie(parsePassage(path));
-    //while (true){
+    while (true){
       try {
         String prefix=(String)this.prefixRequestArray.take();
         System.out.println("taking");
@@ -79,9 +79,9 @@ class Worker extends Thread{
           resultsOutputArray.put("Worker-" + this.id + " " + this.prefixCount + ":" + prefix + " ==> " + this.textTrieTree.plss(prefix));
         }
       } catch(InterruptedException e){
-        System.out.println(e.getMessage());
-      }
-    //}
+          System.out.println(e.getMessage());
+        }
+    }
   }
 
 }
