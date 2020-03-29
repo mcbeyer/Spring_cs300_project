@@ -27,6 +27,7 @@ public class PassageProcessor {
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
          ArrayList<String> paths = new ArrayList<String>();
+         String prefix = "hello";
 
 
          try {
@@ -47,37 +48,42 @@ public class PassageProcessor {
                  new Worker(paths.get(i), i, workers[i], results).start();
              }
 
-             //to be fixed later
-             String tempprefix = "con";
-
-             //give workers the prefix
-             for (int i=0; i<workers.length; i++) {
-                 workers[i].add(tempprefix);
-             }
-
-             //give results (in results array) back to SearchManager
-             String sendBack;
-             String wID;
              
-             for (int i=0; i<paths.size(); i++) {
-                 wID = "";
-                 sendBack = results.take();
-                 System.out.println(sendBack);
+             while (true) {
+                 if (prefix.length() < 3) break;
 
-                 //parse out worker id number
-                 for (char c : sendBack.toCharArray()) {
-                     if (Character.isDigit(c))
-                         wID = wID + Character.toString(c);
+                 //to be fixed later
+                 String tempprefix = "con";
+
+                 //give workers the prefix
+                 for (int i=0; i<workers.length; i++) {
+                     workers[i].add(tempprefix);
                  }
 
-                 //send to SearchManager now along with count of workers
-                 
+                 //give results (in results array) back to SearchManager
+                 String sendBack;
+                 String wID;
+            
+                 for (int i=0; i<paths.size(); i++) {
+                     wID = "";
+                     sendBack = results.take();
+                     System.out.println(sendBack);
+
+                     //parse out worker id number
+                     for (char c : sendBack.toCharArray()) {
+                         if (Character.isDigit(c))
+                             wID = wID + Character.toString(c);
+                     }
+
+                     //send to SearchManager now along with count of workers
+
+                 }
              }
 
             
 
              //done with prefixes now
-             String killer = "0";
+             String killer = "-1";
              for (int i=0; i<workers.length; i++) {
                  workers[i].add(killer);
              }
