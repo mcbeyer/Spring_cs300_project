@@ -60,10 +60,12 @@ public class PassageProcessor {
                  }
                  else prefix = "-1";
 
+                 //kill switch
                  if (prefix.length() < 3) break;
 
                  //give workers the prefix
                  for (int i=0; i<workers.length; i++) {
+                     System.out.println("got to workers");
                      workers[i].add(prefix);
                  }
 
@@ -81,9 +83,9 @@ public class PassageProcessor {
                          if (Character.isDigit(c))
                              wID = wID + Character.toString(c);
                      }
+                     System.out.println(wID);
 
                      //send to SearchManager now along with count of workers
-
                  }
 
                  prefixCount++;
