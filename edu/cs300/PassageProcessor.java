@@ -27,7 +27,7 @@ public class PassageProcessor {
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
          ArrayList<String> paths = new ArrayList<String>();
-         String prefix = "hello";
+         String prefix = "";
 
 
          try {
@@ -48,6 +48,7 @@ public class PassageProcessor {
                  new Worker(paths.get(i), i, workers[i], results).start();
              }
 
+             prefix = "con";
              
              while (true) {
                  if (prefix.length() < 3) break;
@@ -78,6 +79,8 @@ public class PassageProcessor {
                      //send to SearchManager now along with count of workers
 
                  }
+
+                 prefix = "-1";
              }
 
             
