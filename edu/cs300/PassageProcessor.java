@@ -41,6 +41,7 @@ public class PassageProcessor {
              ArrayBlockingQueue[] workers = new ArrayBlockingQueue[paths.size()];
              
              for (int i=0; i<paths.size(); i++) {
+                 workers[i] = new ArrayBlockingQueue(10);
                  new Worker("../../"+paths.get(i), i, workers[i], results).start();
              }
 
