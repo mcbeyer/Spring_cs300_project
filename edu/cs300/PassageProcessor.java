@@ -55,21 +55,26 @@ public class PassageProcessor {
                  workers[i].add(tempprefix);
              }
 
+             //give results (in results array) back to SearchManager
+             String sendBack;
+             String wID;
+             
+             for (int i=0; i<paths.size(); i++) {
+                 wID = "";
+                 sendBack = results.take();
+                 System.out.println(sendBack);
+
+                 //parse out worker id number
+                 for (char c : sendBack.toCharArray()) {
+                     if (Character.isDigit(c))
+                         wID = wID + Character.toString(c);
+                 }
+            }
+
              //done with prefixes now
              String killer = "0";
              for (int i=0; i<workers.length; i++) {
-                workers[i].add(killer);
-             }
-
-             //give results (in results array) back to SearchManager
-             String sendBack;
-             String wID = "";
-             sendBack = results.take();
-
-             //parse out worker id number
-             for (char c : sendBack.toCharArray()) {
-                 if (Character.isDigit(c))
-                    wID = wID + Character.toString(c);
+                 workers[i].add(killer);
              }
 
          }  catch (Exception e) {};
