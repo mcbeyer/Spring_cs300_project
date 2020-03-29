@@ -55,13 +55,6 @@ public class PassageProcessor {
                  workers[i].add(tempprefix);
              }
 
-             tempprefix = "pre";
-
-             //give workers the prefix
-             for (int i=0; i<workers.length; i++) {
-                 workers[i].add(tempprefix);
-             }
-
              //give results (in results array) back to SearchManager
              String sendBack;
              String wID;
@@ -76,7 +69,12 @@ public class PassageProcessor {
                      if (Character.isDigit(c))
                          wID = wID + Character.toString(c);
                  }
-            }
+
+                 //send to SearchManager now along with count of workers
+                 
+             }
+
+            
 
              //done with prefixes now
              String killer = "0";
