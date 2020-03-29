@@ -50,4 +50,16 @@ public class Trie
     public TrieNode getRoot() {
     	return root;
     }
+
+    public String lss() {
+        return root.lss();
+    }
+
+    public String plss(String prefix) {
+        if (!contains(prefix)) {
+            return "";
+        }
+        
+        return root.plss(prefix, 0);
+    }
 }

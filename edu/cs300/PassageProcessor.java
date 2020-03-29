@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PassageProcessor {
-    static String passagePath = "../../passages.txt";
+    static String passagePath = "passages.txt";
     public static void main(String[] args) {
         /**
          * make thread for all text files
@@ -41,7 +41,7 @@ public class PassageProcessor {
              ArrayBlockingQueue[] workers = new ArrayBlockingQueue[paths.size()];
              
              for (int i=0; i<paths.size(); i++) {
-                 new Worker(paths.get(i), i+1, workers[i], results).start();
+                 new Worker("../../"+paths.get(i), i, workers[i], results).start();
              }
 
          }  catch (Exception e) {};

@@ -14,6 +14,7 @@ class Worker extends Thread{
   ArrayBlockingQueue resultsOutputArray;
   int id;
   String passageName;
+  String path;
 
   public Worker(String path,int id,ArrayBlockingQueue prefix, ArrayBlockingQueue results){
     // this.textTrieTree=new Trie(words);
@@ -22,6 +23,7 @@ class Worker extends Thread{
     this.resultsOutputArray=results;
     this.id=id;
     this.passageName="Passage-"+Integer.toString(id)+".txt";//put name of passage here
+    this.path=path;
   }
 
   public static ArrayList<String> parsePassage(String path) {
@@ -42,7 +44,7 @@ class Worker extends Thread{
             if (testing.length() < 3)
                 continue;
             
-            if ((testing.contains("\'")) || (testing.contains("-"))
+            if ((testing.contains("\'")) || (testing.contains("-")))
                 continue;
 
             okWords.add(testing);
@@ -53,6 +55,7 @@ class Worker extends Thread{
 
   public void run() {
     System.out.println("Worker-"+this.id+" ("+this.passageName+") thread started ...");
+    this.textTrieTree = new Trie(parsePassage(path));
     //while (true){
       try {
         String prefix=(String)this.prefixRequestArray.take();

@@ -1,6 +1,7 @@
 package CtCILibrary;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /* One node in the trie. Most of the logic of the trie is implemented
  * in this class.
@@ -70,5 +71,36 @@ public class TrieNode {
     /* Set whether this node is the end of a complete word.*/
     public void setTerminates(boolean t) {
     	terminates = t;
+    }
+
+    public String lss() {
+        if (children == null) {
+            return "";
+        }
+
+        String max = "";
+        String currString;
+        Set<Character> keyList = children.keySet();
+        for (char key: keyList) {
+            TrieNode current = children.get(key);
+            currString = current.lss();
+            if (currString.length() >= max.length()) {
+                max = currString;
+            }
+        }
+        return this.character+max;
+    }
+
+    public String plss(String prefix, int index) {
+        //don't pass in a bad prefix - fix before now
+        //should've already run contains
+        
+        if (prefix.length() == index) {
+            return lss();
+        }
+
+        char key = prefix.charAt(index);
+        TrieNode child = children.get(key);
+        return this.character+child.plss(prefix, ++index);
     }
 }
