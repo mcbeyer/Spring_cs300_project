@@ -61,6 +61,7 @@ class Worker extends Thread{
     //while (true){
       try {
         String prefix=(String)this.prefixRequestArray.take();
+        System.out.println("taking");
 
         //kill the worker with a prefix <3
         if (prefix.length() < 3) {

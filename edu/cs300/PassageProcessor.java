@@ -26,78 +26,78 @@ public class PassageProcessor {
 
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
-         ArrayList<String> paths = new ArrayList<String>();
-         String prefix = "";
-         int prefixCount = 0;
+        ArrayList<String> paths = new ArrayList<String>();
+        String prefix = "";
+        int prefixCount = 0;
 
 
-         try {
-             Scanner passage = new Scanner(new File(passagePath));
-             String line;
-             //read in each passage path and give it to a worker
-             while (passage.hasNextLine()) {
-                 line = passage.nextLine();
-                 paths.add(line);
-             }
+        try {
+            Scanner passage = new Scanner(new File(passagePath));
+            String line;
+            //read in each passage path and give it to a worker
+            while (passage.hasNextLine()) {
+                line = passage.nextLine();
+                paths.add(line);
+            }
 
-             ArrayBlockingQueue<String> results = new ArrayBlockingQueue<String>(paths.size()*10);
-             ArrayBlockingQueue<String>[] workers = new ArrayBlockingQueue[paths.size()];
+            ArrayBlockingQueue<String> results = new ArrayBlockingQueue<String>(paths.size()*10);
+            ArrayBlockingQueue<String>[] workers = new ArrayBlockingQueue[paths.size()];
              
-             //starts the trie creation
-             for (int i=0; i<paths.size(); i++) {
-                 workers[i] = new ArrayBlockingQueue<String>(1);
-                 new Worker(paths.get(i), i, workers[i], results).start();
-             }
+            //starts the trie creation
+            for (int i=0; i<paths.size(); i++) {
+                workers[i] = new ArrayBlockingQueue<String>(1);
+                new Worker(paths.get(i), i, workers[i], results).start();
+            }
 
              
-             while (true) {
-                 if (prefixCount == 0) {
-                     prefix = "con";
-                 }
-                 else if (prefixCount == 1) {
-                     prefix = "pre";
-                 }
-                 else prefix = "-1";
+            while (true) {
+                if (prefixCount == 0) {
+                    prefix = "con";
+                }
+                else if (prefixCount == 1) {
+                    prefix = "pre";
+                }
+                else prefix = "-1";
 
-                 //kill switch
-                 if (prefix.length() < 3) break;
+                //kill switch
+                if (prefix.length() < 3) break;
 
-                 //give workers the prefix
-                 for (int i=0; i<workers.length; i++) {
-                     workers[i].add(prefix);
-                 }
+                //give workers the prefix
+                for (int i=0; i<workers.length; i++) {
+                    workers[i].add(prefix);
+                }
 
-                 //give results (in results array) back to SearchManager
-                 String sendBack;
-                 String wID;
+                //give results (in results array) back to SearchManager
+                String sendBack;
+                String wID;
             
-                 for (int i=0; i<paths.size(); i++) {
-                     wID = "";
-                     System.out.println("about to take");
-                     sendBack = results.take();
-                     System.out.println(sendBack);
+                for (int i=0; i<paths.size(); i++) {
+                    wID = "";
+                    System.out.println("about to take");
+                    sendBack = results.take();
+                    System.out.println(sendBack);
 
-                     //parse out worker id number
-                     for (char c : sendBack.toCharArray()) {
-                         if (Character.isDigit(c))
-                             wID = wID + Character.toString(c);
-                     }
-                     System.out.println(wID);
+                    //parse out worker id number - doesn't work, adds prefix count
+                    for (char c : sendBack.toCharArray()) {
+                        if (Character.isDigit(c))
+                            wID = wID + Character.toString(c);
+                    }
+                    //  System.out.println(wID);
 
-                     //send to SearchManager now along with count of workers
-                 }
+                    //send to SearchManager now along with count of workers
+                }
 
-                 prefixCount++;
-             }
+                prefixCount++;
+            }
 
             
 
-             //done with prefixes now
-             String killer = "-1";
-             for (int i=0; i<workers.length; i++) {
-                 workers[i].add(killer);
-             }
+            //done with prefixes now
+            String killer = "-1";
+            for (int i=0; i<workers.length; i++) {
+                workers[i].add(killer);
+            }
 
-         }  catch (Exception e) {};
+        }  catch (Exception e) {};
     }
 }
