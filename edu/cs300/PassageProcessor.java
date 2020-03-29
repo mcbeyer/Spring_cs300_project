@@ -28,6 +28,7 @@ public class PassageProcessor {
         
          ArrayList<String> paths = new ArrayList<String>();
          String prefix = "";
+         int prefixCount = 0;
 
 
          try {
@@ -48,9 +49,16 @@ public class PassageProcessor {
                  new Worker(paths.get(i), i, workers[i], results).start();
              }
 
-             prefix = "con";
              
              while (true) {
+                 if (prefixCount == 0) {
+                     prefix = "con";
+                 }
+                 else if (prefixCount == 1) {
+                     prefix = "pre";
+                 }
+                 else prefix = "-1";
+
                  if (prefix.length() < 3) break;
 
                  //to be fixed later
@@ -80,7 +88,7 @@ public class PassageProcessor {
 
                  }
 
-                 prefix = "-1";
+                 prefixCount++;
              }
 
             
