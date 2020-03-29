@@ -75,7 +75,7 @@ class Worker extends Thread{
           resultsOutputArray.put("Worker-" + this.id + " " + this.prefixCount + ":" + prefix + " ==> not found");
         } else{
           //System.out.println("Worker-"+this.id+" "+req.requestID+":"+ prefix+" ==> "+word);
-          resultsOutputArray.put("Worker-" + this.id + this.prefixCount + ":" + prefix + " ==> " + this.textTrieTree.plss(prefix));
+          resultsOutputArray.put("Worker-" + this.id + " " + this.prefixCount + ":" + prefix + " ==> " + this.textTrieTree.plss(prefix));
         }
       } catch(InterruptedException e){
         System.out.println(e.getMessage());
