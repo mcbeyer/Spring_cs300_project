@@ -10,13 +10,13 @@ import java.util.regex.Pattern;
 class Worker extends Thread{
 
   Trie textTrieTree;
-  ArrayBlockingQueue prefixRequestArray;
-  ArrayBlockingQueue resultsOutputArray;
+  ArrayBlockingQueue<String> prefixRequestArray;
+  ArrayBlockingQueue<String> resultsOutputArray;
   int id;
   String passageName;
   String path;
 
-  public Worker(String path,int id,ArrayBlockingQueue prefix, ArrayBlockingQueue results){
+  public Worker(String path,int id,ArrayBlockingQueue<String> prefix, ArrayBlockingQueue<String> results){
     // this.textTrieTree=new Trie(words);
     this.textTrieTree = null;
     this.prefixRequestArray=prefix;
