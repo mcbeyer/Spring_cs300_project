@@ -30,7 +30,6 @@ public class PassageProcessor {
         
         ArrayList<String> paths = new ArrayList<String>();
         String prefix = "";
-        int prefixCount = 0;
 
 
         try {
@@ -71,23 +70,20 @@ public class PassageProcessor {
 
                 //give results (in results array) back to SearchManager
                 String sendBack;
-                String wID;
+                int wID;
+                int prefixCount;
             
                 for (int i=0; i<paths.size(); i++) {
-                    wID = "";
-                    System.out.println("about to take");
                     sendBack = results.take();
-                    System.out.println(sendBack);
-
+                    
                     //parse out worker id number - doesn't work, adds prefix count
-                    Pattern p = Pattern.compile("(?<=Worker-)\\d+)");
-                    Matcher m = p.matcher(sendBack);
-                    if (m.find()) {
-                        wID = m.group();
-                        System.out.println("hi");
-                    }
+                    String[] sBtwo = sendBack.split("-");
+                    String[] sBthree = sBtwo[1].split(" ");
+                    wID = Integer.parseInt(sBthree[0]);
+                    prefixCount = Integer.parseInt(sBthree[1]);
 
-                    System.out.println(wID);
+                    System.out.println("wID: "wID);
+                    System.out.println("prefixCount:" + prefixCount);
 
                     //send to SearchManager now along with count of workers
                 }
