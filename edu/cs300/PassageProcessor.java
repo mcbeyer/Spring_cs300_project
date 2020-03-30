@@ -77,14 +77,14 @@ public class PassageProcessor {
                     String[] sBtwo = sendBack.split("-");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
-                    
+
                     System.out.println(sBthree[3].substring(1));
 
                     if (sendBack.contains("not found")) {
                         new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", paths.size(), 0);
                     }
                     else {
-                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3].substring(1), paths.size(), 0);
+                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3].substring(1), paths.size(), 1);
                     }
                 }
 
