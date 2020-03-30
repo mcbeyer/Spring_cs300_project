@@ -78,9 +78,9 @@ public class PassageProcessor {
                     
                     //parse out worker id number - doesn't work, adds prefix count
                     String[] sBtwo = sendBack.split("-");
-                    System.out.println("hi");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
+                    System.out.println("hi");
                     prefixCount = Integer.parseInt(sBthree[1]);
 
                     System.out.println("wID: " + wID);
