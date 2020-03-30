@@ -176,7 +176,6 @@ int main(int argc, char** argv) {
                 printf("Passage %d - %s - not found\n", responseArray[j].index, responseArray[j].location_description);
             }
         }
-        printf("\n");
 
     }
 
