@@ -78,6 +78,40 @@ void send(int prefixID, char* prefix) {
 
 }
 
+response_buf receive() {
+    int msqid;
+    int msgflg = IPC_CREAT | 0666;
+    key_t key;
+    response_buf rbuf;
+    size_t buf_length;
+
+    key = ftok(CRIMSON_ID,QUEUE_NUMBER);
+    if ((msqid = msgget(key, msgflg)) < 0) {
+        int errnum = errno;
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("(msgget)");
+        fprintf(stderr, "Error msgget: %s\n", strerror( errnum ));
+    }
+    else
+        fprintf(stderr, "msgget: msgget succeeded: msgqid = %d\n", msqid);
+
+
+    // msgrcv to receive message
+    int ret;
+    do {
+      ret = msgrcv(msqid, &rbuf, sizeof(response_buf), 2, 0);//receive type 2 message
+      int errnum = errno;
+      if (ret < 0 && errno !=EINTR){
+        fprintf(stderr, "Value of errno: %d\n", errno);
+        perror("Error printed by perror");
+        fprintf(stderr, "Error receiving msg: %s\n", strerror( errnum ));
+      }
+    } while ((ret < 0 ) && (errno == 4));
+    //fprintf(stderr,"msgrcv error return code --%d:$d--",ret,errno);
+
+    return rbuf;
+}
+
 int main(int argc, char** argv) {
 
     if (argc < 3) {
@@ -87,6 +121,9 @@ int main(int argc, char** argv) {
 
     int wait = atoi(argv[1]);        //time to wait between sending prefixes
     int i;
+    response_buf response;
+    response_buf* responseArray = NULL;
+
     for (i=2; i<argc; i++) {        //loop to read all prefixes
         /**send prefix via System V ipc message (send prefix ID starting at 1)
          * wait for results (count how many have returned) (if count==denominator statement)
@@ -107,9 +144,33 @@ int main(int argc, char** argv) {
                 break;
             }
         }
-        send(i-1, argv[i]);
 
-        //sleep(wait);
+        //send the message!
+        send(i-1, argv[i]);
+        sleep(wait);
+
+        //receive the results and print
+        response = receive();
+        if (responseArray == NULL)
+            responseArray = (response_buf*) malloc (sizeof(response_buf)*response.count);
+
+        responseArray[response.index] = response;
+
+        //j=1 because 1 message is already received
+        for (j=1; j<response.count; j++) {
+            response = receive();
+            responseArray[response.index] = response;
+        }
+
+        for (j=0; j<response.count; j++) {
+            if (responseArray[j].present == 1) {
+                printf("Passage %d - %s - %s\n", responseArray[j].index, responseArray[j].location_description, responseArray[j].longest_word);
+            }
+            else {
+                printf("Passage %d - %s - not found\n", responseArray[j].index, responseArray[j].location_description);
+            }
+        }
+
     }
 
     //don't forget to do the SIGINT if ^C is called
