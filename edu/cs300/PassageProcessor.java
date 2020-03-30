@@ -80,8 +80,8 @@ public class PassageProcessor {
                     String[] sBtwo = sendBack.split("-");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
-                    System.out.println(sBthree[1]);
                     String[] sBfour = sBthree[1].split(":");
+                    System.out.println(sBfour[0]);
                     prefixCount = Integer.parseInt(sBfour[0]);
                     
                     System.out.println("wID: " + wID);
@@ -91,6 +91,7 @@ public class PassageProcessor {
                 }
 
                 // prefixCount++;
+                prefix = "-1";
             }
 
             
@@ -100,8 +101,6 @@ public class PassageProcessor {
             for (int i=0; i<workers.length; i++) {
                 workers[i].add(killer);
             }
-
-            prefix = "-1";
 
         }  catch (Exception e) {};
     }
