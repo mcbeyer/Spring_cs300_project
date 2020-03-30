@@ -83,9 +83,7 @@ public class PassageProcessor {
                     String[] sBfour = sBthree[1].split(":");
                     prefixCount = Integer.parseInt(sBfour[0]);
                     
-                    System.out.println("wID: " + wID);
-                    System.out.println("prefixCount:" + prefixCount);
-                    System.out.println("message" + sendBack);
+                    System.out.println("message:" + sendBack);
 
                     //send to SearchManager now along with count of workers
                 }
