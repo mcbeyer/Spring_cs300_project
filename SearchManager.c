@@ -56,9 +56,7 @@ void send(int prefixID, char* prefix) {
         perror("(msgget)");
         fprintf(stderr, "Error msgget: %s\n", strerror( errnum ));
     }
-    else
-        fprintf(stderr, "msgget: msgget succeeded: msgqid = %d\n", msqid);
-
+    
     // We'll send message type 1
     sbuf.mtype = 1;
     strlcpy(sbuf.prefix,prefix,WORD_LENGTH);
@@ -73,8 +71,6 @@ void send(int prefixID, char* prefix) {
         fprintf(stderr, "Error sending msg: %s\n", strerror( errnum ));
         exit(1);
     }
-    else
-        fprintf(stderr,"Message(%d): \"%s\" Sent (%d bytes)\n", sbuf.id, sbuf.prefix,(int)buf_length);
 
 }
 
@@ -92,9 +88,6 @@ response_buf receive() {
         perror("(msgget)");
         fprintf(stderr, "Error msgget: %s\n", strerror( errnum ));
     }
-    else
-        fprintf(stderr, "msgget: msgget succeeded: msgqid = %d\n", msqid);
-
 
     // msgrcv to receive message
     int ret;
@@ -191,6 +184,6 @@ int main(int argc, char** argv) {
      * send prefix ID of 0
      */
 
-    send(0, "-1");
+    send(0, "   ");
 
 }
