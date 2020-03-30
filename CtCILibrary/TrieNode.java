@@ -84,8 +84,13 @@ public class TrieNode {
         for (char key: keyList) {
             TrieNode current = children.get(key);
             currString = current.lss();
-            if (currString.length() >= max.length()) {
+            if (currString.length() > max.length()) {
                 max = currString;
+            }
+            else if (currString.length() == max.length()) {
+                if (currString.compareTo(max) > 0) {
+                    max = currString;
+                }
             }
         }
         return this.character+max;
