@@ -75,10 +75,10 @@ public class PassageProcessor {
             
                 for (int i=0; i<paths.size(); i++) {
                     sendBack = results.take();
-                    System.out.println("hi");
                     
                     //parse out worker id number - doesn't work, adds prefix count
                     String[] sBtwo = sendBack.split("-");
+                    System.out.println("hi");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
                     prefixCount = Integer.parseInt(sBthree[1]);
