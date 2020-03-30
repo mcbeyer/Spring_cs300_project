@@ -1,4 +1,4 @@
-JObj = edu/cs300/PassageProcessor.class edu/cs300/Worker.class CtCILibrary/Trie.class CtCILibrary/TrieNode.class edu/cs300/TextSamples.class edu_cs300_MessageJNI.h
+JObj = edu/cs300/PassageProcessor.class edu/cs300/Worker.class CtCILibrary/Trie.class CtCILibrary/TrieNode.class edu_cs300_MessageJNI.h 
 CObj = SearchManager msgsnd msgrcv edu_cs300_MessageJNI.o
 
 all: $(JObj) $(CObj)
