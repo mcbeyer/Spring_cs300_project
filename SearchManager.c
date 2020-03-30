@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
         exit(1);
     }
     else if (rc == 0){ //the child - java one
-        int state = system("java -cp . -Djava.library.path=. edu.cs300.PassageProcessor");
+        int state = system("java -cp . -Djava.library.path=. edu.cs300.PassageProcessor > results.log");
         return(0);
     }
 
