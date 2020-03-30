@@ -53,13 +53,13 @@ public class PassageProcessor {
 
              
             while (true) {
-                // if (prefixCount == 0) {
-                //     prefix = "con";
-                // }
-                // else if (prefixCount == 1) {
-                //     prefix = "pre";
-                // }
-                // else prefix = "-1";
+                if (prefixCount == 0) {
+                    prefix = "con";
+                }
+                else if (prefixCount == 1) {
+                    prefix = "pre";
+                }
+                else prefix = "-1";
 
                 //kill switch
                 if (prefix.length() < 3) break;
@@ -81,7 +81,6 @@ public class PassageProcessor {
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
                     String[] sBfour = sBthree[1].split(":");
-                    System.out.println(sBfour[0]);
                     prefixCount = Integer.parseInt(sBfour[0]);
                     
                     System.out.println("wID: " + wID);
@@ -90,7 +89,6 @@ public class PassageProcessor {
                     //send to SearchManager now along with count of workers
                 }
 
-                // prefixCount++;
                 prefix = "-1";
             }
 
