@@ -80,9 +80,8 @@ public class PassageProcessor {
                     String[] sBtwo = sendBack.split("-");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
-                    System.out.println("hi");
                     prefixCount = Integer.parseInt(sBthree[1]);
-
+                    System.out.println("hi");
                     System.out.println("wID: " + wID);
                     System.out.println("prefixCount:" + prefixCount);
 
