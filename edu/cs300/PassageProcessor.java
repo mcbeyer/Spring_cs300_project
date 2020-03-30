@@ -81,7 +81,8 @@ public class PassageProcessor {
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
                     System.out.println(sBthree[1]);
-                    prefixCount = Integer.parseInt(sBthree[1]);
+                    String[] sBfour = sBthree[1].split(":");
+                    prefixCount = Integer.parseInt(sBfour[0]);
                     
                     System.out.println("wID: " + wID);
                     System.out.println("prefixCount:" + prefixCount);
