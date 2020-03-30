@@ -9,6 +9,7 @@
 #include "queue_ids.h"
 #include <ctype.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #ifndef mac
 size_t                  /* O - Length of string */
@@ -108,7 +109,7 @@ int main(int argc, char** argv) {
         }
         send(i-1, argv[i]);
 
-        _sleep(wait);
+        //sleep(wait);
     }
 
     //don't forget to do the SIGINT if ^C is called
