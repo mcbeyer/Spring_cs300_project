@@ -2,6 +2,8 @@ package edu.cs300;
 
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,11 +80,14 @@ public class PassageProcessor {
                     System.out.println(sendBack);
 
                     //parse out worker id number - doesn't work, adds prefix count
-                    for (char c : sendBack.toCharArray()) {
-                        if (Character.isDigit(c))
-                            wID = wID + Character.toString(c);
+                    Pattern p = Pattern.compile("(?<=Worker-)\\d+)");
+                    Matcher m = p.matcher(sendBack);
+                    if (m.find()) {
+                        wID = m.group();
                     }
-                    //  System.out.println(wID);
+
+
+                      System.out.println(wID);
 
                     //send to SearchManager now along with count of workers
                 }
