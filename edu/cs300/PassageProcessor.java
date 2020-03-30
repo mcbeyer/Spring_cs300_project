@@ -85,6 +85,7 @@ public class PassageProcessor {
                     
                     System.out.println("wID: " + wID);
                     System.out.println("prefixCount:" + prefixCount);
+                    System.out.println("message" + sendBack);
 
                     //send to SearchManager now along with count of workers
                 }
