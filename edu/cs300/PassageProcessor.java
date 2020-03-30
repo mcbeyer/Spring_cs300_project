@@ -29,7 +29,7 @@ public class PassageProcessor {
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
         ArrayList<String> paths = new ArrayList<String>();
-        String prefix = "con";
+        String prefix;
         int prefixCount = 0;
 
 
@@ -59,7 +59,8 @@ public class PassageProcessor {
                 prefixCount = message.requestID;
 
                 //kill switch
-                if (prefix.length() < 3) break;
+                if ((prefix.length() < 3) || prefix.compareTo("   ") == 0) break;
+                System.out.println("**prefix(" + prefixCount + ") " + prefix + " received");
 
                 //give workers the prefix
                 for (int i=0; i<workers.length; i++) {
