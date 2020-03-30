@@ -67,7 +67,6 @@ public class PassageProcessor {
                 //give workers the prefix
                 for (int i=0; i<workers.length; i++) {
                     workers[i].add(prefix);
-                    System.out.println("hi");
                 }
 
                 //give results (in results array) back to SearchManager
@@ -76,6 +75,7 @@ public class PassageProcessor {
             
                 for (int i=0; i<paths.size(); i++) {
                     sendBack = results.take();
+                    System.out.println("hi");
                     
                     //parse out worker id number - doesn't work, adds prefix count
                     String[] sBtwo = sendBack.split("-");
