@@ -67,6 +67,7 @@ public class PassageProcessor {
                 //give workers the prefix
                 for (int i=0; i<workers.length; i++) {
                     workers[i].add(prefix);
+                    System.out.println("hi");
                 }
 
                 //give results (in results array) back to SearchManager
