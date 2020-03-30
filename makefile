@@ -23,6 +23,9 @@ edu_cs300_MessageJNI.o: system5_msg.c
 edu/cs300/PassageProcessor.class: edu/cs300/PassageProcessor.java edu/cs300/Worker.java
 	javac edu/cs300/PassageProcessor.java
 
+edu/cs300/SearchResults.class: edu/cs300/SearchResults.java
+	javac edu/cs300/SearchResults.java
+
 edu/cs300/TextSamples.class: edu/cs300/TextSamples.java
 	javac edu/cs300/TextSamples.java
 
