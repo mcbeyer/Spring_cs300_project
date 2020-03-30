@@ -1,5 +1,5 @@
 JObj = edu/cs300/PassageProcessor.class edu/cs300/Worker.class CtCILibrary/Trie.class CtCILibrary/TrieNode.class edu/cs300/TextSamples.class edu_cs300_MessageJNI.h
-CObj = searchmanager msgsnd msgrcv edu_cs300_MessageJNI.o
+CObj = SearchManager msgsnd msgrcv edu_cs300_MessageJNI.o
 
 all: $(JObj) $(CObj)
 
@@ -35,7 +35,7 @@ msgsnd: msgsnd_pr.c
 msgrcv: msgrcv_lwr.c
 	gcc $(
 
-searchmanager: searchmanager.c $(JObj)
+searchmanager: SearchManager.c $(JObj)
 	gcc $(
 
 testp: $(JObj)
