@@ -53,6 +53,7 @@ public class PassageProcessor {
 
              
             while (true) {
+                // SearchRequest message = MessageJNI.readPrefixRequestMsg();
                 if (prefixCount == 0) {
                     prefix = "con";
                 }
@@ -83,9 +84,16 @@ public class PassageProcessor {
                     String[] sBfour = sBthree[1].split(":");
                     prefixCount = Integer.parseInt(sBfour[0]);
                     
-                    System.out.println("message:" + sendBack);
+                    System.out.println("message:" + sBthree[3]);
 
-                    //send to SearchManager now along with count of workers
+                    // if (sendBack.contains("not found")) {
+                    //     System.out.println(new MessageJNI().readPrefixRequestMsg());
+                    //     new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", paths.size(), 0);
+                    // }
+                    // else {
+                    //     System.out.println(new MessageJNI().readPrefixRequestMsg());
+                    //     new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3], paths.size(), 0);
+                    // }
                 }
 
                 prefix = "-1";
