@@ -56,7 +56,7 @@ public class PassageProcessor {
                 System.out.println("while");
 
                 SearchRequest message = MessageJNI.readPrefixRequestMsg();
-                // prefix = message.prefix;
+                prefix = message.prefix;
                 prefixCount = message.requestID;
 
                 System.out.println("search request");
