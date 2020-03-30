@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    int sec = atoi(argv[1]);        //time to wait between sending prefixes
+    int wait = atoi(argv[1]);        //time to wait between sending prefixes
     int i;
     for (i=2; i<argc; i++) {        //loop to read all prefixes
         /**send prefix via System V ipc message (send prefix ID starting at 1)
@@ -90,8 +90,22 @@ int main(int argc, char** argv) {
          * print results
          * wait sec time (?)
          */
-        //remove invalid prefixes here
+
+        //removing prefixes of incorrect length
+        if (strlen(argv[i])<3 || strlen(argv[i])>20){
+            printf("invalid prefix length");
+        }
+
+        //removing prefixes with non-alphabet characters
+        for (int j=0; j<strlen(argv[j]); j++) {
+            if (isalpha(argv[i][j]) == 0) { //isn't alphabet
+                printf("invalid character found");
+                break;
+            }
+        }
         send(i-1, argv[i]);
+
+        _sleep(wait);
     }
 
     //don't forget to do the SIGINT if ^C is called
