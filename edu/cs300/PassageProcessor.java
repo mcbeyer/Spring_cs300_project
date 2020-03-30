@@ -29,7 +29,7 @@ public class PassageProcessor {
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
         ArrayList<String> paths = new ArrayList<String>();
-        String prefix = "";
+        String prefix = "con";
         int prefixCount = 0;
 
 
@@ -53,13 +53,13 @@ public class PassageProcessor {
 
              
             while (true) {
-                if (prefixCount == 0) {
-                    prefix = "con";
-                }
-                else if (prefixCount == 1) {
-                    prefix = "pre";
-                }
-                else prefix = "-1";
+                // if (prefixCount == 0) {
+                //     prefix = "con";
+                // }
+                // else if (prefixCount == 1) {
+                //     prefix = "pre";
+                // }
+                // else prefix = "-1";
 
                 //kill switch
                 if (prefix.length() < 3) break;
@@ -98,6 +98,8 @@ public class PassageProcessor {
             for (int i=0; i<workers.length; i++) {
                 workers[i].add(killer);
             }
+
+            prefix = "-1";
 
         }  catch (Exception e) {};
     }
