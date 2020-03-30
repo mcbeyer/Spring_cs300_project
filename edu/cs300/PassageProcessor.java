@@ -53,14 +53,9 @@ public class PassageProcessor {
 
              
             while (true) {
-                // SearchRequest message = MessageJNI.readPrefixRequestMsg();
-                if (prefixCount == 0) {
-                    prefix = "con";
-                }
-                else if (prefixCount == 1) {
-                    prefix = "pre";
-                }
-                else prefix = "-1";
+                SearchRequest message = MessageJNI.readPrefixRequestMsg();
+                prefix = message.prefix;
+                prefixCount = message.requestID;
 
                 //kill switch
                 if (prefix.length() < 3) break;
@@ -81,25 +76,21 @@ public class PassageProcessor {
                     String[] sBtwo = sendBack.split("-");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
-                    String[] sBfour = sBthree[1].split(":");
-                    prefixCount = Integer.parseInt(sBfour[0]);
                     
                     System.out.println("message:" + sBthree[3]);
 
-                    // if (sendBack.contains("not found")) {
-                    //     System.out.println(new MessageJNI().readPrefixRequestMsg());
-                    //     new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", paths.size(), 0);
-                    // }
-                    // else {
-                    //     System.out.println(new MessageJNI().readPrefixRequestMsg());
-                    //     new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3], paths.size(), 0);
-                    // }
+                    if (sendBack.contains("not found")) {
+                        System.out.println(new MessageJNI().readPrefixRequestMsg());
+                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", paths.size(), 0);
+                    }
+                    else {
+                        System.out.println(new MessageJNI().readPrefixRequestMsg());
+                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3], paths.size(), 0);
+                    }
                 }
 
                 prefix = "-1";
             }
-
-            
 
             //done with prefixes now
             String killer = "-1";
