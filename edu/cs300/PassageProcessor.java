@@ -84,11 +84,11 @@ public class PassageProcessor {
                     System.out.println("message:" + sBthree[3]);
 
                     if (sendBack.contains("not found")) {
-                        System.out.println(new MessageJNI().readPrefixRequestMsg());
+                        // System.out.println(new MessageJNI().readPrefixRequestMsg());
                         new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", paths.size(), 0);
                     }
                     else {
-                        System.out.println(new MessageJNI().readPrefixRequestMsg());
+                        // System.out.println(new MessageJNI().readPrefixRequestMsg());
                         new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3], paths.size(), 0);
                     }
                 }
