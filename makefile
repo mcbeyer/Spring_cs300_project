@@ -29,20 +29,20 @@ edu/cs300/TextSamples.class: edu/cs300/TextSamples.java
 edu/cs300/Worker.class: edu/cs300/Worker.java
 	javac edu/cs300/Worker.java
 
-msgsnd: msgsnd_pr.c
-	gcc $(
-
 msgrcv: msgrcv_lwr.c
-	gcc $(
+	gcc -std=c99 -D_GNU_SOURCE msgrcv_lwr.c -o msgrcv
+
+msgsnd: msgsnd_pr.c
+	gcc -std=c99 -D_GNU_SOURCE msgsnd_pr.c -o msgsnd
 
 searchmanager: SearchManager.c $(JObj)
-	gcc $(
+	gcc -std=c99 -D_GNU_SOURCE SearchManager.c -o SearchManager
 
 testp: $(JObj)
 	java -cp . -Djava.library.path=. edu.cs300.PassageProcessor
 
 test: all
-	./searchmanager 2 con pre wor
+	./SearchManager 2 con pre wor
 
 clean:
 	rm $(JObj)
