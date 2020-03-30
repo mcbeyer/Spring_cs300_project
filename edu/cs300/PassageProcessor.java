@@ -29,7 +29,7 @@ public class PassageProcessor {
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
         ArrayList<String> paths = new ArrayList<String>();
-        String prefix = "con";
+        String prefix = "";
         int prefixCount = 0;
 
 
