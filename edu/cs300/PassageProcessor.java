@@ -53,9 +53,13 @@ public class PassageProcessor {
 
              
             while (true) {
+                System.out.println("while");
+
                 SearchRequest message = MessageJNI.readPrefixRequestMsg();
                 // prefix = message.prefix;
                 prefixCount = message.requestID;
+
+                System.out.println("search request");
 
                 //kill switch
                 if (prefix.length() < 3) break;
