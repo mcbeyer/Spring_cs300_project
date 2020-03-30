@@ -119,6 +119,16 @@ int main(int argc, char** argv) {
         return -1;
     }
 
+    int rc = fork();
+    if (rc < 0) {
+        fprintf(stderr, "fork failed\n");
+        exit(1);
+    }
+    else if (rc == 0){ //the child - java one
+        int state = system("java -cp . -Djava.library.path=. edu.cs300.PassageProcessor");
+        return(0);
+    }
+
     int wait = atoi(argv[1]);        //time to wait between sending prefixes
     int i;
     response_buf response;
