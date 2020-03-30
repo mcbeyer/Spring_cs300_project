@@ -84,10 +84,10 @@ public class PassageProcessor {
                     Matcher m = p.matcher(sendBack);
                     if (m.find()) {
                         wID = m.group();
+                        System.out.println("hi");
                     }
 
-
-                      System.out.println(wID);
+                    System.out.println(wID);
 
                     //send to SearchManager now along with count of workers
                 }
