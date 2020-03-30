@@ -7,6 +7,8 @@
 #include <errno.h>
 #include "longest_word_search.h"
 #include "queue_ids.h"
+#include <ctype.h>
+#include <unistd.h>
 
 #ifndef mac
 size_t                  /* O - Length of string */
