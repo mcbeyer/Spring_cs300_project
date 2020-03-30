@@ -72,7 +72,7 @@ void send(int prefixID, char* prefix) {
         exit(1);
     }
     else
-        printf("Message(%d): \"%s\" Sent (%d bytes)\n",sbuf.id, sbuf.prefix, (int)buf_length);
+        printf("Message(%d): \"%s\" Sent (%d bytes)\n\n",sbuf.id, sbuf.prefix, (int)buf_length);
 
 }
 
@@ -167,6 +167,7 @@ int main(int argc, char** argv) {
             responseArray[response.index] = response;
         }
 
+        printf("Report \"%s\"\n", argv[i]);
         for (j=0; j<response.count; j++) {
             if (responseArray[j].present == 1) {
                 printf("Passage %d - %s - %s\n", responseArray[j].index, responseArray[j].location_description, responseArray[j].longest_word);
@@ -175,6 +176,7 @@ int main(int argc, char** argv) {
                 printf("Passage %d - %s - not found\n", responseArray[j].index, responseArray[j].location_description);
             }
         }
+        printf("\n");
 
     }
 
@@ -187,5 +189,6 @@ int main(int argc, char** argv) {
      */
 
     send(0, "   ");
+    printf("Exiting ...");
 
 }
