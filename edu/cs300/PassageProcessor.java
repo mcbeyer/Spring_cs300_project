@@ -29,7 +29,7 @@ public class PassageProcessor {
         //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
         ArrayList<String> paths = new ArrayList<String>();
-        String prefix = "";
+        String prefix = "con";
         int prefixCount = 0;
 
 
@@ -54,7 +54,7 @@ public class PassageProcessor {
              
             while (true) {
                 SearchRequest message = MessageJNI.readPrefixRequestMsg();
-                prefix = message.prefix;
+                // prefix = message.prefix;
                 prefixCount = message.requestID;
 
                 //kill switch
