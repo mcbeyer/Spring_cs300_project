@@ -1,22 +1,22 @@
 JObj = CtCILibrary/Trie.class CtCILibrary/TrieNode.class edu/cs300/TextSamples.class edu/cs300/PassageProcessor.class edu/cs300/Worker.class edu_cs300_MessageJNI.h
 CObj = SearchManager msgsnd msgrcv edu_cs300_MessageJNI.o
 
-all:
-	$(JObj) $(CObj)
+all: $(JObj) $(CObj)
 
 pull:
 	git pull origin master
 
-CtCILibrary/Trie.class: CtCILibrary/Trie.java CtCILibrary/TrieNode.java
-	javac CtCILibrary/Trie.java
-
 CtCILibrary/TrieNode.class: CtCILibrary/TrieNode.java
 	javac CtCILibrary/TrieNode.java
+
+CtCILibrary/Trie.class: CtCILibrary/Trie.java CtCILibrary/TrieNode.java
+	javac CtCILibrary/Trie.java
 
 edu_cs300_MessageJNI.h: edu/cs300/MessageJNI.java
 	javac -h . edu/cs300/MessageJNI.java
 
-edu/cs300/PassageProcessor.class: edu/cs300/PassageProcessor.java
+edu/cs300/PassageProcessor.class: edu/cs300/PassageProcessor.java edu/cs300/Worker.java
+	javac edu/cs300/PassageProcessor.java
 
 edu/cs300/TextSamples.class: edu/cs300/TextSamples.java
 	javac edu/cs300/TextSamples.java
