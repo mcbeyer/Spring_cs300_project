@@ -53,13 +53,10 @@ public class PassageProcessor {
 
              
             while (true) {
-                System.out.println("while");
 
                 SearchRequest message = MessageJNI.readPrefixRequestMsg();
                 prefix = message.prefix;
                 prefixCount = message.requestID;
-
-                System.out.println("search request");
 
                 //kill switch
                 if (prefix.length() < 3) break;
@@ -80,15 +77,11 @@ public class PassageProcessor {
                     String[] sBtwo = sendBack.split("-");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
-                    
-                    System.out.println("message:" + sBthree[3]);
 
                     if (sendBack.contains("not found")) {
-                        // System.out.println(new MessageJNI().readPrefixRequestMsg());
                         new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", paths.size(), 0);
                     }
                     else {
-                        // System.out.println(new MessageJNI().readPrefixRequestMsg());
                         new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3], paths.size(), 0);
                     }
                 }
