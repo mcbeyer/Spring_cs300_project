@@ -35,7 +35,7 @@ msgrcv: msgrcv_lwr.c
 msgsnd: msgsnd_pr.c
 	gcc -std=c99 -D_GNU_SOURCE msgsnd_pr.c -o msgsnd
 
-searchmanager: SearchManager.c $(JObj)
+SearchManager: SearchManager.c $(JObj)
 	gcc -std=c99 -D_GNU_SOURCE SearchManager.c -o SearchManager
 
 testp: $(JObj)

@@ -97,7 +97,8 @@ int main(int argc, char** argv) {
         }
 
         //removing prefixes with non-alphabet characters
-        for (int j=0; j<strlen(argv[j]); j++) {
+        int j;
+        for (j=0; j<strlen(argv[j]); j++) {
             if (isalpha(argv[i][j]) == 0) { //isn't alphabet
                 printf("invalid character found");
                 break;
