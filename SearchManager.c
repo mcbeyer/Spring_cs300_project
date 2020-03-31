@@ -117,21 +117,22 @@ void handler (int signum) {
     int i;
     pthread_mutex_lock(&LOCK);
         if (COMPLETED_PASSAGES == 0) {
-            for (i=2; i<TOTAL_PREFIXES; i++){
+            for (i=0; i<TOTAL_PREFIXES; i++){
                 printf("%s - pending\n", PREFIXES[i]);
             }       
         }
         else {
-            for (i=2; i<TOTAL_PREFIXES; i++){
-                if (COMPLETED_PASSAGES/TOTAL_PASSAGES > i-2) {
+            for (i=0; i<TOTAL_PREFIXES; i++){
+                if (COMPLETED_PASSAGES/TOTAL_PASSAGES > i) {
                     printf("%s - done\n", PREFIXES[i]);
                 }
-                else if (COMPLETED_PASSAGES){
-                    printf("hi");
+                else if (COMPLETED_PASSAGES == i){
+                    printf("%s - %d out of %d\n", PREFIXES[i], COMPLETED_PASSAGES%TOTAL_PASSAGES, TOTAL_PASSAGES);
                 }
-                
+                else {
+                    printf("%s - pending\n", PREFIXES[i]);
+                }
             }
-            printf("yay");
         }
     pthread_mutex_unlock(&LOCK);
 }
@@ -144,7 +145,7 @@ int main(int argc, char** argv) {
     printf("%s", PREFIXES[0]);
     COMPLETED_PASSAGES = 0;
     pthread_mutex_init(&LOCK, NULL);
-    //signal(SIGINT, handler);
+    signal(SIGINT, handler);
 
 
     if (argc < 3) {
