@@ -116,6 +116,7 @@ response_buf receive() {
 
 void handler (int signum) {
     int i;
+
     pthread_mutex_lock(&LOCK);
         if (COMPLETED_PASSAGES == 0) {
             for (i=0; i<TOTAL_PREFIXES; i++){
