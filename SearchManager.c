@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <signal.h>
 
 pthread_mutex_t LOCK;
 int TOTAL_PREFIXES;     //IE ARGC
