@@ -167,7 +167,7 @@ int main(int argc, char** argv) {
             responseArray[response.index] = response;
         }
 
-        printf("Report \"%s\"", argv[i]);
+        printf("Report \"%s\"\n", argv[i]);
         for (j=0; j<response.count; j++) {
             if (responseArray[j].present == 1) {
                 printf("Passage %d - %s - %s\n", responseArray[j].index, responseArray[j].location_description, responseArray[j].longest_word);
