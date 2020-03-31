@@ -11,6 +11,12 @@
 #include <unistd.h>
 #include <pthread.h>
 
+pthread_mutex_t LOCK;
+int TOTAL_PREFIXES;     //IE ARGC
+char** PREFIXES;        //IE ARGV
+int TOTAL_PASSAGES;     // COMPLETED_PASSAGES out of X
+int COMPLETED_PASSAGES; // X out of TOTAL_PASSAGES
+
 #ifndef mac
 size_t                  /* O - Length of string */
 strlcpy(char       *dst,        /* O - Destination string */
@@ -41,6 +47,7 @@ strlcpy(char       *dst,        /* O - Destination string */
     return (srclen);
 }
 #endif
+
 
 void send(int prefixID, char* prefix) {
     int msqid;
@@ -75,7 +82,6 @@ void send(int prefixID, char* prefix) {
         printf("\nMessage(%d): \"%s\" Sent (%d bytes)\n\n",sbuf.id, sbuf.prefix, (int)buf_length);
 
 }
-
 response_buf receive() {
     int msqid;
     int msgflg = IPC_CREAT | 0666;
@@ -107,7 +113,39 @@ response_buf receive() {
     return rbuf;
 }
 
+void handler (int signum) {
+    int i;
+    pthread_mutex_lock(&LOCK);
+        if (COMPLETED_PASSAGES == 0) {
+            for (i=2; i<TOTAL_PREFIXES; i++){
+                printf("%s - pending\n", PREFIXES[i]);
+            }       
+        }
+        else {
+            for (i=2; i<TOTAL_PREFIXES; i++){
+                if (COMPLETED_PASSAGES/TOTAL_PASSAGES > i-2) {
+                    printf("%s - done\n", PREFIXES[i]);
+                }
+                else if (COMPLETED_PASSAGES){
+                    printf
+                }
+                
+            }
+            print("yay");
+        }
+    pthread_mutex_unlock(&LOCK);
+}
+
 int main(int argc, char** argv) {
+
+    TOTAL_PREFIXES = argc-2;
+    printf("%d", TOTAL_PREFIXES);
+    PREFIXES = argv+2;
+    printf("%s", PREFIXES[0]);
+    COMPLETED_PASSAGES = 0;
+    pthread_mutex_init(&LOCK, NULL);
+    //signal(SIGINT, handler);
+
 
     if (argc < 3) {
         printf("wrong format dumbass\n");
@@ -126,8 +164,9 @@ int main(int argc, char** argv) {
 
     int wait = atoi(argv[1]);        //time to wait between sending prefixes
     int i;
+    
     response_buf response;
-    response_buf* responseArray = NULL;
+    response_buf* responseArray;
 
     for (i=2; i<argc; i++) {        //loop to read all prefixes
         /**send prefix via System V ipc message (send prefix ID starting at 1)
@@ -156,6 +195,12 @@ int main(int argc, char** argv) {
 
         //receive the results and print
         response = receive();
+
+        pthread_mutex_lock(&LOCK);
+            TOTAL_PASSAGES = response.count;
+            COMPLETED_PASSAGES++;
+        pthread_mutex_unlock(&LOCK);
+
         if (responseArray == NULL)
             responseArray = (response_buf*) malloc (sizeof(response_buf)*response.count);
 
@@ -163,6 +208,9 @@ int main(int argc, char** argv) {
 
         //j=1 because 1 message is already received
         for (j=1; j<response.count; j++) {
+            pthread_mutex_lock(&LOCK);
+                COMPLETED_PASSAGES++;
+            pthread_mutex_unlock(&LOCK);
             response = receive();
             responseArray[response.index] = response;
         }
