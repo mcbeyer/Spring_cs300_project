@@ -226,11 +226,7 @@ int main(int argc, char** argv) {
                 printf("Passage %d - %s - not found\n", responseArray[j].index, responseArray[j].location_description);
             }
         }
-
     }
-
-    //don't forget to do the SIGINT if ^C is called
-    //returns status of searchManager
 
     /**
      * send message to passage processer saying searchManager is done (no more prefixes to send)
@@ -239,5 +235,5 @@ int main(int argc, char** argv) {
 
     send(0, "   ");
     printf("Exiting ...");
-
+    free(responseArray);
 }
