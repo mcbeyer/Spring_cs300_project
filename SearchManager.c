@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
 
     TOTAL_PREFIXES = argc-2;
     printf("%d", TOTAL_PREFIXES);
-    PREFIXES = argv+2;
+    PREFIXES = argv+2*sizeof(char*);
     printf("%s", PREFIXES[0]);
     COMPLETED_PASSAGES = 0;
     pthread_mutex_init(&LOCK, NULL);
