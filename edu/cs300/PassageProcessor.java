@@ -58,9 +58,10 @@ public class PassageProcessor {
                 prefix = message.prefix;
                 prefixCount = message.requestID;
 
+                System.out.println("**prefix(" + prefixCount + ") " + prefix + " received");
+                
                 //kill switch
                 if ((prefix.length() < 3) || prefix.compareTo("   ") == 0) break;
-                System.out.println("**prefix(" + prefixCount + ") " + prefix + " received");
 
                 //give workers the prefix
                 for (int i=0; i<workers.length; i++) {
