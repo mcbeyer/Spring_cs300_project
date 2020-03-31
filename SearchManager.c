@@ -127,7 +127,7 @@ void handler (int signum) {
                     printf("%s - done\n", PREFIXES[i]);
                 }
                 else if (COMPLETED_PASSAGES){
-                    printf
+                    printf("hi");
                 }
                 
             }
