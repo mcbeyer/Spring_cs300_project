@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
     int i;
     
     response_buf response;
-    response_buf* responseArray;
+    response_buf* responseArray = NULL;
 
     for (i=2; i<argc; i++) {        //loop to read all prefixes
         /**send prefix via System V ipc message (send prefix ID starting at 1)
