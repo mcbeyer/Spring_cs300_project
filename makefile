@@ -47,6 +47,9 @@ testp: $(JObj)
 test: all
 	./SearchManager 2 con pre wor
 
+testsig: all
+	./SearchManager 2 con pre wor
+
 clean:
 	rm $(JObj)
 	rm $(CObj)
