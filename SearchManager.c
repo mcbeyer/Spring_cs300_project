@@ -141,9 +141,9 @@ void handler (int signum) {
 int main(int argc, char** argv) {
 
     TOTAL_PREFIXES = argc-2;
-    printf("%d", TOTAL_PREFIXES);
-    PREFIXES = argv+2*sizeof(char*);
-    printf("%s", PREFIXES[0]);
+    printf("%d ", TOTAL_PREFIXES);
+    PREFIXES = argv+2;
+    printf("%s\n", PREFIXES[0]);
     COMPLETED_PASSAGES = 0;
     pthread_mutex_init(&LOCK, NULL);
     signal(SIGINT, handler);
