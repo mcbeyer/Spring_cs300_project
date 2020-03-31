@@ -131,7 +131,7 @@ void handler (int signum) {
                 }
                 
             }
-            print("yay");
+            printf("yay");
         }
     pthread_mutex_unlock(&LOCK);
 }
