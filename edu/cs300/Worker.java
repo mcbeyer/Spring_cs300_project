@@ -23,7 +23,10 @@ class Worker extends Thread{
     this.prefixRequestArray=prefix;
     this.resultsOutputArray=results;
     this.id=id;
-    this.passageName="Passage-"+Integer.toString(id)+".txt";//put name of passage here
+    
+    String[] pns = path.split("/");
+    this.passageName=pns[pns.length-1];//put name of passage here
+
     this.path=path;
     this.prefixCount=0;
   }

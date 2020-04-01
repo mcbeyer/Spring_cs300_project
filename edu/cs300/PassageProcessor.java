@@ -57,6 +57,7 @@ public class PassageProcessor {
                 try {
                     new File(paths.get(i));
                 } catch (Exception e) {
+                    System.out.println("Trigger >:(");
                     System.err.println("File " + paths.get(i) + " doesn't exist");
                     continue;
                 }
