@@ -58,12 +58,12 @@ public class PassageProcessor {
                 try {
                     newFile = new File(paths.get(i));
                 } catch (NullPointerException e) {
-                    System.err.println("File " + paths.get(i) + " doesn't exist");
+                    System.err.println("File " + paths.get(i) + " doesn't exist\n");
                     continue;
                 }
 
                 if (!newFile.exists()) {
-                    System.err.println("File " + paths.get(i) + " doesn't exist");
+                    System.err.println("File " + paths.get(i) + " doesn't exist\n");
                     continue;
                 }
 
@@ -73,7 +73,7 @@ public class PassageProcessor {
             }
 
             if (workerList.size() == 0) {
-                System.err.println("No valid passages in passages.txt");
+                System.err.println("No valid passages in passages.txt\n");
                 return;
             }
              
