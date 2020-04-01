@@ -56,7 +56,7 @@ public class PassageProcessor {
             for (int i=0; i<paths.size(); i++) {
                 newFile = null;
                 try {
-                    new File(paths.get(i));
+                    newFile = new File(paths.get(i));
                 } catch (NullPointerException e) {
                     System.out.println("Trigger >:(");
                     System.err.println("File " + paths.get(i) + " doesn't exist");
