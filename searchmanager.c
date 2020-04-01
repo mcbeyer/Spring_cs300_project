@@ -125,7 +125,6 @@ int isValidPrefix(char* prfx) {
     
     //removing prefixes of incorrect length
     if (strlen(prfx)<3 || strlen(prfx)>20){
-        fprintf(stderr, "invalid prefix length for %s\n", prfx);
         return 0;
     }
 
@@ -133,7 +132,6 @@ int isValidPrefix(char* prfx) {
     int j;
     for (j=0; j<strlen(prfx); j++) {
         if (isalpha(prfx[j]) == 0) { //isn't alphabet
-            fprintf(stderr, "invalid character found in prefix %s\n", prfx);
             return 0;
         }
     }
@@ -155,6 +153,9 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
     if (newArgc == 0) {
         fprintf(stderr, "no valid prefixes found in helper\n");
         exit(1); 
+    }
+    if (newArgc != origArgc) {
+        fprintf(stderr, "some prefixes have been ommitted for being invalid");
     }
     
     newArgc += 2;  //to account for first two that aren't prefixes
