@@ -171,7 +171,7 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
     int i;
     int newArgc = 0;
     for (i=0; i<(*origArgc); i++) {
-        if (isValidPrefix(&origArgv[i]) == 1) {  //valid prefix
+        if (isValidPrefix(origArgv[i]) == 1) {  //valid prefix
             newArgc++;
         }
     }
@@ -198,7 +198,7 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
         }
     }
     
-    return argv;
+    return newArgv;
 }
 
 int main(int argc, char** argv) {
