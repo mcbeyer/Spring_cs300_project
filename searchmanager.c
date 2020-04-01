@@ -230,6 +230,6 @@ int main(int argc, char** argv) {
      */
 
     send(0, "   ");
-    printf("Exiting ...");
+    printf("Exiting ...\n");
     free(responseArray);
 }
