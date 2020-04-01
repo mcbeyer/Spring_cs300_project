@@ -217,7 +217,7 @@ int main(int argc, char** argv) {
     }
 
     int wait = atoi(argv[1]);        //time to wait between sending prefixes
-    int i;
+    int i, j;
     
     response_buf response;
     response_buf* responseArray = NULL;
