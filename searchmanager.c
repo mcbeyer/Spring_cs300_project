@@ -20,10 +20,7 @@ pthread_mutex_t LOCK;
 int TOTAL_PREFIXES;     //IE ARGC
 char** PREFIXES;        //IE ARGV
 int TOTAL_PASSAGES;     // COMPLETED_PASSAGES out of X
-// int COMPLETED_PASSAGES; // X out of TOTAL_PASSAGES
-
 sem_t completed_passages;
-sem_t completed_prefixes;
 
 //taken from system5_msg.c
 #ifndef mac
@@ -136,7 +133,6 @@ void mainHandler (int signum) {
     int i;
     int completed;
     sem_getvalue(&completed_passages, &completed);
-    printf("semvalue %d\n", completed);
     for (i=0; i<TOTAL_PREFIXES; i++){
         if (completed/TOTAL_PASSAGES > i) {
             printf("%s - done\n", PREFIXES[i]);
@@ -150,43 +146,16 @@ void mainHandler (int signum) {
     }
 }
 
-// //CTRL-C HANDLER
-// void handler (int signum) {
-//     int i;
-
-//     //LOCK GLOBAL VARIABLES UNTIL SIGINT IS DONE WITH THEM
-//     //PREVENTS THEM FROM BEING UPDATED WHILE HANDLER IS USING THEM
-//     pthread_mutex_lock(&LOCK);
-//         if (COMPLETED_PASSAGES == 0) {
-//             for (i=0; i<TOTAL_PREFIXES; i++){
-//                 printf("%s - pending\n", PREFIXES[i]);
-//             }       
-//         }
-//         else {
-//             for (i=0; i<TOTAL_PREFIXES; i++){
-//                 if (COMPLETED_PASSAGES/TOTAL_PASSAGES > i) {
-//                     printf("%s - done\n", PREFIXES[i]);
-//                 }
-//                 else if (COMPLETED_PASSAGES == i){
-//                     printf("%s - %d out of %d\n", PREFIXES[i], COMPLETED_PASSAGES%TOTAL_PASSAGES, TOTAL_PASSAGES);
-//                 }
-//                 else {
-//                     printf("%s - pending\n", PREFIXES[i]);
-//                 }
-//             }
-//         }
-//     pthread_mutex_unlock(&LOCK);
-// }
+void funkyPrefixes() {
+    return;
+}
 
 int main(int argc, char** argv) {
 
     //edit out the command call and second parameter
     TOTAL_PREFIXES = argc-2;
     PREFIXES = argv+2;
-    sem_init(&completed_prefixes, 0, 0);
     sem_init(&completed_passages, 0, 0);
-    // COMPLETED_PASSAGES = 0;
-    // pthread_mutex_init(&LOCK, NULL);
     signal(SIGINT, initHandler);
 
 
@@ -234,10 +203,6 @@ int main(int argc, char** argv) {
         sem_post(&completed_passages);
         signal(SIGINT, mainHandler);
 
-        // pthread_mutex_lock(&LOCK);
-            // COMPLETED_PASSAGES++;
-        // pthread_mutex_unlock(&LOCK);
-
         if (responseArray == NULL)
             responseArray = (response_buf*) malloc (sizeof(response_buf)*response.count);
 
@@ -245,15 +210,10 @@ int main(int argc, char** argv) {
 
         //j=1 because 1 message is already received
         for (j=1; j<response.count; j++) {
-            // pthread_mutex_lock(&LOCK);
-            //     COMPLETED_PASSAGES++;
-            // pthread_mutex_unlock(&LOCK);
             sem_post(&completed_passages);
             response = receive();
             responseArray[response.index] = response;
         }
-
-        sem_post(&completed_prefixes);
 
         printf("Report \"%s\"\n", argv[i]);
         for (j=0; j<response.count; j++) {
@@ -274,4 +234,5 @@ int main(int argc, char** argv) {
     send(0, "   ");
     printf("Exiting ...\n");
     free(responseArray);
+    destroy(&completed_passages);
 }
