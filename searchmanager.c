@@ -170,7 +170,7 @@ int isValidPrefix(char* prfx) {
 char** makeValidPrefixList(int* origArgc, char** origArgv) {
     int i;
     int newArgc = 0;
-    for (i=0; i<(*origArgc); i++) {
+    for (i=2; i<(*origArgc); i++) {
         if (isValidPrefix(origArgv[i]) == 1) {  //valid prefix
             newArgc++;
         }
