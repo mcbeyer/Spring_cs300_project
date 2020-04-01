@@ -107,10 +107,10 @@ public class PassageProcessor {
                     wID = Integer.parseInt(sBthree[0]);
 
                     if (sendBack.contains("not found")) {
-                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", workerList.size(), 0);
+                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), "----", workerList.size()-1, 0);
                     }
                     else {
-                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3].substring(1), workerList.size(), 1);
+                        new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, paths.get(wID), sBthree[3].substring(1), workerList.size()-1, 1);
                     }
                 }
 
