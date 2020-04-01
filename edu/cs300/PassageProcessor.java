@@ -63,7 +63,7 @@ public class PassageProcessor {
                     continue;
                 }
 
-                if (newFile.exists()) {
+                if (!newFile.exists()) {
                     System.out.println("Trigger >:(");
                     System.err.println("File " + paths.get(i) + " doesn't exist");
                     continue;
