@@ -16,7 +16,7 @@ testp: all
 	java -cp . -Djava.library.path=. edu.cs300.PassageProcessor
 
 test: all
-	./searchmanager 2 pr 02 345 p0w ottffssentettffssentt
+	./searchmanager 2 con pre wor ew l00k she
 
 testsig: all
 	./searchmanager 0 con pre wor
