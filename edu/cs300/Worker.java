@@ -38,20 +38,24 @@ class Worker extends Thread{
     String testing;
     ArrayList<String> okWords = new ArrayList<String>();
 
+    Scanner word;
     try {
-        Scanner word = new Scanner(new File(path));
-        word.useDelimiter("[^a-zA-Z\'-]");
-        while (word.hasNext()) {
-            testing = word.next();
-            if (testing.length() < 3)
-                continue;
-            
-            if ((testing.contains("\'")) || (testing.contains("-")))
-                continue;
+        word = new Scanner(new File(path));
+    } catch (Exception e) {
+      System.err.println("file not found");
+      return null;
+    }
+      word.useDelimiter("[^a-zA-Z\'-]");
+      while (word.hasNext()) {
+          testing = word.next();
+          if (testing.length() < 3)
+              continue;
+          
+          if ((testing.contains("\'")) || (testing.contains("-")))
+              continue;
 
-            okWords.add(testing);
-        }
-    }  catch (Exception e) {};
+          okWords.add(testing);
+      }
     return okWords;
   }
 

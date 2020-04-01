@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PassageProcessor {
     static String passagePath = "passages.txt";
-    public static void main(String[] args) {
+    public static void PassageProcessing() {
         /**
          * make thread for all text files
          * each thread makes a trie
@@ -31,6 +31,7 @@ public class PassageProcessor {
         ArrayList<String> paths = new ArrayList<String>();
         String prefix;
         int prefixCount = 0;
+        ArrayList<Worker> workerList = new ArrayList<Worker>();
 
 
         try {
@@ -43,12 +44,20 @@ public class PassageProcessor {
             }
 
             ArrayBlockingQueue<String> results = new ArrayBlockingQueue<String>(paths.size()*10);
-            ArrayBlockingQueue<String>[] workers = new ArrayBlockingQueue[paths.size()];
+            ArrayList<ArrayBlockingQueue<String>> workers = new ArrayList<ArrayBlockingQueue<String>>();
              
             //starts the trie creation
             for (int i=0; i<paths.size(); i++) {
-                workers[i] = new ArrayBlockingQueue<String>(1);
-                new Worker(paths.get(i), i, workers[i], results).start();
+
+                try {
+                    new File(paths.get(i));
+                } catch (Exception e) {
+                    System.err.println("File " + paths.get(i) + " doesn't exist");
+                    continue;
+                }
+                workers.add(new ArrayBlockingQueue<String>(1));
+                workerList.add(new Worker(paths.get(i), workers.size()-1, workers.get(workers.size()-1), results));
+                workerList.get(workerList.size()-1).start();
             }
 
              
@@ -64,15 +73,15 @@ public class PassageProcessor {
                 if ((prefix.length() < 3) || prefix.compareTo("   ") == 0) break;
 
                 //give workers the prefix
-                for (int i=0; i<workers.length; i++) {
-                    workers[i].add(prefix);
+                for (int i=0; i<workers.size(); i++) {
+                    workers.get(i).add(prefix);
                 }
 
                 //give results (in results array) back to SearchManager
                 String sendBack;
                 int wID;
             
-                for (int i=0; i<paths.size(); i++) {
+                for (int i=0; i<workerList.size(); i++) {
                     sendBack = results.take();
                     
                     //parse out worker id number - doesn't work, adds prefix count
@@ -93,10 +102,13 @@ public class PassageProcessor {
 
             //done with prefixes now
             String killer = "-1";
-            for (int i=0; i<workers.length; i++) {
-                workers[i].add(killer);
+            for (int i=0; i<workers.size(); i++) {
+                workers.get(i).add(killer);
             }
-
-        }  catch (Exception e) {};
+            for (Worker w : workerList) {
+                w.join();
+            }
+            System.out.println("Terminating ...\n");
+        }  catch (Exception e) {System.err.println(e.getMessage());}
     }
 }

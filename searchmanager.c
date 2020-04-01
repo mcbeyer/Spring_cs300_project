@@ -12,6 +12,9 @@
 #include <pthread.h>
 #include <signal.h>
 
+//how to pass things from main to SIGINT
+//signals work best by modifying global variables,
+//so I make everything SIGINT needs a global variable
 pthread_mutex_t LOCK;
 int TOTAL_PREFIXES;     //IE ARGC
 char** PREFIXES;        //IE ARGV
@@ -114,9 +117,12 @@ response_buf receive() {
     return rbuf;
 }
 
+//CTRL-C HANDLER
 void handler (int signum) {
     int i;
 
+    //LOCK GLOBAL VARIABLES UNTIL SIGINT IS DONE WITH THEM
+    //PREVENTS THEM FROM BEING UPDATED WHILE HANDLER IS USING THEM
     pthread_mutex_lock(&LOCK);
         if (COMPLETED_PASSAGES == 0) {
             for (i=0; i<TOTAL_PREFIXES; i++){
@@ -141,10 +147,9 @@ void handler (int signum) {
 
 int main(int argc, char** argv) {
 
+    //edit out the command call and second parameter
     TOTAL_PREFIXES = argc-2;
-    printf("%d ", TOTAL_PREFIXES);
     PREFIXES = argv+2;
-    printf("%s\n", PREFIXES[0]);
     COMPLETED_PASSAGES = 0;
     pthread_mutex_init(&LOCK, NULL);
     signal(SIGINT, handler);
@@ -153,16 +158,6 @@ int main(int argc, char** argv) {
     if (argc < 3) {
         printf("wrong format dumbass\n");
         return -1;
-    }
-
-    int rc = fork();
-    if (rc < 0) {
-        fprintf(stderr, "fork failed\n");
-        exit(1);
-    }
-    else if (rc == 0){ //the child - java one
-        int state = system("java -cp . -Djava.library.path=. edu.cs300.PassageProcessor > results.log");
-        return(0);
     }
 
     int wait = atoi(argv[1]);        //time to wait between sending prefixes
