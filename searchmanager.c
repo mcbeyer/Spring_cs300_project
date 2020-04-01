@@ -170,15 +170,30 @@ int isValidPrefix(char* prfx) {
 char** makeValidPrefixList(int* origArgc, char** origArgv) {
     int i;
     int newArgc = 0;
-    char** newArgv = (char**)malloc(sizeof(char*)*isValidPrefix+2)
     for (i=0; i<origArgc; i++) {
+        if (isValidPrefix(origArgv[i]) == 1) {  //valid prefix
+            newArgc++;
+        }
+    }
+
+    //no valid prefixes - kill the program
+    if (newArgc == 0) {
+        fprintf(stderr, "no valid prefixes found in helper");
+        exit(1); 
+    }
+    
+    newArgc+2;  //to account for first two that aren't prefixes
+    origArgc = newArgc; //pass by reference - full size including first 2 parameters
+
+    char** newArgv = (char**)malloc(sizeof(char*)*(newArgc));
+    newArgc = 2;
+
+    for (i=2; i<origArgc; i++) {
         if (isValidPrefix(origArgv[i]) == 1) {  //valid prefix
             newArgv[newArgc] = origArgv[i];
             newArgc++;
         }
     }
-    newArgc+2;  //to account for first two that aren't prefixes
-    origArgc = newArgc; //pass by reference
     
     return argv;
 }
