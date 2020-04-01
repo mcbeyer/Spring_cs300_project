@@ -142,7 +142,7 @@ void mainHandler (int signum) {
         }
         else if (i == completed) {
             //look at completed_passages
-            semgetvalue(&completed_passages, &completed);
+            sem_getvalue(&completed_passages, &completed);
             printf("%s - %d out of %d\n", PREFIXES[i], completed, TOTAL_PREFIXES);
         }
         else {
@@ -232,8 +232,8 @@ int main(int argc, char** argv) {
 
         //update semaphore
         TOTAL_PASSAGES = response.count;
-        sem_post(completed_passages);
-        signal(SIG_INT, mainHandler);
+        sem_post(&completed_passages);
+        signal(SIGINT, mainHandler);
 
         // pthread_mutex_lock(&LOCK);
             // COMPLETED_PASSAGES++;
@@ -249,12 +249,12 @@ int main(int argc, char** argv) {
             // pthread_mutex_lock(&LOCK);
             //     COMPLETED_PASSAGES++;
             // pthread_mutex_unlock(&LOCK);
-            sem_post(completed_passages);
+            sem_post(&completed_passages);
             response = receive();
             responseArray[response.index] = response;
         }
 
-        sem_post(completed_prefixes);
+        sem_post(&completed_prefixes);
 
         printf("Report \"%s\"\n", argv[i]);
         for (j=0; j<response.count; j++) {
