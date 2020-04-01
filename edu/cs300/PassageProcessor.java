@@ -5,6 +5,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,6 @@ public class PassageProcessor {
         int prefixCount = 0;
         ArrayList<Worker> workerList = new ArrayList<Worker>();
 
-        new File("thing.txt");
-
         try {
             Scanner passage = new Scanner(new File(passagePath));
             String line;
@@ -52,12 +51,19 @@ public class PassageProcessor {
             ArrayBlockingQueue<String> results = new ArrayBlockingQueue<String>(paths.size()*10);
             ArrayList<ArrayBlockingQueue<String>> workers = new ArrayList<ArrayBlockingQueue<String>>();
              
+            File newFile;
             //starts the trie creation
             for (int i=0; i<paths.size(); i++) {
-
+                newFile = null;
                 try {
                     new File(paths.get(i));
-                } catch (Exception e) {
+                } catch (NullPointerException e) {
+                    System.out.println("Trigger >:(");
+                    System.err.println("File " + paths.get(i) + " doesn't exist");
+                    continue;
+                }
+
+                if (newFile == null) {
                     System.out.println("Trigger >:(");
                     System.err.println("File " + paths.get(i) + " doesn't exist");
                     continue;
