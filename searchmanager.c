@@ -184,8 +184,8 @@ int main(int argc, char** argv) {
     //edit out the command call and second parameter
     TOTAL_PREFIXES = argc-2;
     PREFIXES = argv+2;
-    sem_init(completed_prefixes, 0, 0);
-    sem_init(completed_passages, 0, 0);
+    sem_init(&completed_prefixes, 0, 0);
+    sem_init(&completed_passages, 0, 0);
     // COMPLETED_PASSAGES = 0;
     // pthread_mutex_init(&LOCK, NULL);
     signal(SIGINT, initHandler);
