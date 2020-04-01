@@ -154,7 +154,7 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
         exit(0); 
     }
     if (newArgc+2 != *origArgc) {
-        fprintf(stderr, "some prefixes have been ommitted for being invalid");
+        fprintf(stderr, "some prefixes have been ommitted for being invalid\n");
     }
     
     newArgc += 2;  //to account for first two that aren't prefixes
