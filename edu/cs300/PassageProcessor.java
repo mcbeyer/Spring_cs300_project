@@ -72,6 +72,10 @@ public class PassageProcessor {
                 workerList.get(workerList.size()-1).start();
             }
 
+            if (workerList.size() == 0) {
+                System.err.println("No valid passages in passages.txt");
+                return;
+            }
              
             while (true) {
 
