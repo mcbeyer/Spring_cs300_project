@@ -121,32 +121,6 @@ response_buf receive() {
     return rbuf;
 }
 
-//init handler - prints invalid prefixes too
-void initHandler (int signum) {
-    int i;
-    for (i=0; i<TOTAL_PREFIXES; i++)
-        printf("%s - pending\n", PREFIXES[i]);
-}
-
-//main handler
-void mainHandler (int signum) {
-    int i;
-    int completed;
-    PREFIXES = makeValidPrefixList(&TOTAL_PREFIXES, PREFIXES);
-    sem_getvalue(&completed_passages, &completed);
-    for (i=0; i<TOTAL_PREFIXES; i++){
-        if (completed/TOTAL_PASSAGES > i) {
-            printf("%s - done\n", PREFIXES[i]);
-        }
-        else if (completed == i){
-            printf("%s - %d out of %d\n", PREFIXES[i], completed%TOTAL_PASSAGES, TOTAL_PASSAGES);
-        }
-        else {
-            printf("%s - pending\n", PREFIXES[i]);
-        }
-    }
-}
-
 int isValidPrefix(char* prfx) {
     
     //removing prefixes of incorrect length
@@ -200,6 +174,32 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
     
     *origArgc = newArgc; //pass by reference - full size including first 2 parameters
     return newArgv;
+}
+
+//init handler - prints invalid prefixes too
+void initHandler (int signum) {
+    int i;
+    for (i=0; i<TOTAL_PREFIXES; i++)
+        printf("%s - pending\n", PREFIXES[i]);
+}
+
+//main handler
+void mainHandler (int signum) {
+    int i;
+    int completed;
+    PREFIXES = makeValidPrefixList(&TOTAL_PREFIXES, PREFIXES);
+    sem_getvalue(&completed_passages, &completed);
+    for (i=0; i<TOTAL_PREFIXES; i++){
+        if (completed/TOTAL_PASSAGES > i) {
+            printf("%s - done\n", PREFIXES[i]);
+        }
+        else if (completed == i){
+            printf("%s - %d out of %d\n", PREFIXES[i], completed%TOTAL_PASSAGES, TOTAL_PASSAGES);
+        }
+        else {
+            printf("%s - pending\n", PREFIXES[i]);
+        }
+    }
 }
 
 int main(int argc, char** argv) {
