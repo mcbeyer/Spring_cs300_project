@@ -193,7 +193,7 @@ void mainHandler (int signum) {
         if (completed/TOTAL_PASSAGES > i) {
             printf("%s - done\n", PREFIXES[i]);
         }
-        else if (completed == i){
+        else if (completed/TOTAL_PASSAGES == i){
             printf("%s - %d out of %d\n", PREFIXES[i], completed%TOTAL_PASSAGES, TOTAL_PASSAGES);
         }
         else {
