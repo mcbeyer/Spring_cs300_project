@@ -150,7 +150,7 @@ int isValidPrefix(char* prfx) {
     
     //removing prefixes of incorrect length
     if (strlen(prfx)<3 || strlen(prfx)>20){
-        fprintf(stderr, "invalid prefix length for %s", prfx);
+        fprintf(stderr, "invalid prefix length for %s\n", prfx);
         return 0;
     }
 
@@ -158,7 +158,7 @@ int isValidPrefix(char* prfx) {
     int j;
     for (j=0; j<strlen(prfx); j++) {
         if (isalpha(prfx[j]) == 0) { //isn't alphabet
-            fprintf(stderr, "invalid character found in prefix %s", prfx);
+            fprintf(stderr, "invalid character found in prefix %s\n", prfx);
             return 0;
         }
     }
@@ -178,7 +178,7 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
 
     //no valid prefixes - kill the program
     if (newArgc == 0) {
-        fprintf(stderr, "no valid prefixes found in helper");
+        fprintf(stderr, "no valid prefixes found in helper\n");
         exit(1); 
     }
     
@@ -228,20 +228,6 @@ int main(int argc, char** argv) {
          * print results
          * wait sec time (?)
          */
-
-        //removing prefixes of incorrect length
-        if (strlen(argv[i])<3 || strlen(argv[i])>20){
-            fprintf(stderr, "invalid prefix length");
-        }
-
-        //removing prefixes with non-alphabet characters
-        int j;
-        for (j=0; j<strlen(argv[j]); j++) {
-            if (isalpha(argv[i][j]) == 0) { //isn't alphabet
-                fprintf(stderr, "invalid character found in prefix %d", i);
-                break;
-            }
-        }
 
         //send the message!
         send(i-1, argv[i]);
