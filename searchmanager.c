@@ -133,6 +133,9 @@ int isValidPrefix(char* prfx) {
         if (isalpha(prfx[j]) == 0) { //isn't alphabet
             return 0;
         }
+        else {
+            tolower(prfx[j]);
+        }
     }
 
     return 1;
