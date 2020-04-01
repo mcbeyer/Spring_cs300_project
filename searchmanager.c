@@ -16,7 +16,12 @@
 //how to pass things from main to SIGINT
 //signals work best by modifying global variables,
 //so I make everything SIGINT needs a global variable
-pthread_mutex_t LOCK;
+//Because completed_passages is updated frequently,
+//I made it a semaphore so that it can't be interrupted
+//while updating
+//Everything else is a global variable because once it's
+//initialized, it doesn't update anymore, which is fairly
+//safe in my opinion
 int TOTAL_PREFIXES;     //IE ARGC
 char** PREFIXES;        //IE ARGV
 int TOTAL_PASSAGES;     // COMPLETED_PASSAGES out of X
@@ -120,6 +125,8 @@ response_buf receive() {
     return rbuf;
 }
 
+//checks each character of a given prefix to determine if it's valid or not
+//valid returns 1, invalid returns 0
 int isValidPrefix(char* prfx) {
     
     //removing prefixes of incorrect length
@@ -142,6 +149,8 @@ int isValidPrefix(char* prfx) {
 }
 
 //weed out invalid prefixes and update argc and argv to reflect the new list
+//take in main's argc and argv
+//return new argv array and update argc by passing parameters
 char** makeValidPrefixList(int* origArgc, char** origArgv) {
     int i;
     int newArgc = 0;
@@ -164,6 +173,7 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
 
     char** newArgv = (char**)malloc(sizeof(char*)*(newArgc));
 
+    //keep first two (command and time)
     newArgv[0] = origArgv[0];
     newArgv[1] = origArgv[1];
     newArgc = 2;        //first prefix goes at index 2
@@ -180,6 +190,8 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
 }
 
 //init handler - prints invalid prefixes too
+//Runs before PassageProcessor returns, when
+//total number of passages has yet to be determined
 void initHandler (int signum) {
     int i;
     for (i=2; i<TOTAL_PREFIXES; i++)
@@ -190,17 +202,18 @@ void initHandler (int signum) {
 void mainHandler (int signum) {
     int i;
     int completed;
+    //fix prefixes
     PREFIXES = makeValidPrefixList(&TOTAL_PREFIXES, PREFIXES);
     sem_getvalue(&completed_passages, &completed);
     
     for (i=2; i<TOTAL_PREFIXES; i++){
-        if (completed/TOTAL_PASSAGES > i-2) {
+        if (completed/TOTAL_PASSAGES > i-2) {   //already completed
             printf("%s - done\n", PREFIXES[i]);
         }
-        else if (completed/TOTAL_PASSAGES == i-2 && completed%TOTAL_PASSAGES != 0){
+        else if (completed/TOTAL_PASSAGES == i-2 && completed%TOTAL_PASSAGES != 0){     //currently doing
             printf("%s - %d out of %d\n", PREFIXES[i], completed%TOTAL_PASSAGES, TOTAL_PASSAGES);
         }
-        else {
+        else {  //have yet to do
             printf("%s - pending\n", PREFIXES[i]);
         }
     }
@@ -208,12 +221,12 @@ void mainHandler (int signum) {
 
 int main(int argc, char** argv) {
 
-    //edit out the command call and second parameter
     TOTAL_PREFIXES = argc;
     PREFIXES = argv;
     sem_init(&completed_passages, 0, 0);
     signal(SIGINT, initHandler);
 
+    //update argv to exclude invalid prefixes
     argv = makeValidPrefixList(&argc, argv);
 
     if (argc < 3) {
@@ -241,21 +254,21 @@ int main(int argc, char** argv) {
         //receive the results and print
         response = receive();
 
-        //update semaphore
+        //update semaphore and implement other sigint handler
         TOTAL_PASSAGES = response.count;
         sem_post(&completed_passages);
         signal(SIGINT, mainHandler);
 
         if (responseArray == NULL)
             responseArray = (response_buf*) malloc (sizeof(response_buf)*response.count);
-
         responseArray[response.index] = response;
 
         //j=1 because 1 message is already received
         for (j=1; j<response.count; j++) {
-            sem_post(&completed_passages);
             response = receive();
             responseArray[response.index] = response;
+            //number of completed passages increments
+            sem_post(&completed_passages);
         }
 
         printf("Report \"%s\"\n", argv[i]);
@@ -273,7 +286,6 @@ int main(int argc, char** argv) {
      * send message to passage processer saying searchManager is done (no more prefixes to send)
      * send prefix ID of 0
      */
-
     send(0, "   ");
     printf("Exiting ...\n");
     free(responseArray);

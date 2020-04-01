@@ -20,7 +20,7 @@ public class PassageProcessor {
         /**
          * make thread for all text files
          * each thread makes a trie
-         * wait for prefixes to come in using Java Native Call
+         * wait for prefixes to come in
          * send prefix to each worker to process
          * worker finds longest word
          * recieve longest word from worker
@@ -31,8 +31,6 @@ public class PassageProcessor {
          * wait for next prefix or process next prefix
          * if id=0, quit
          */
-
-        //  ArrayBlockingQueue prefix = new ArrayBlockingQueue<>(10);
         
         ArrayList<String> paths = new ArrayList<String>();
         String prefix;
@@ -55,6 +53,7 @@ public class PassageProcessor {
             //starts the trie creation
             for (int i=0; i<paths.size(); i++) {
                 newFile = null;
+                //test the passage paths
                 try {
                     newFile = new File(paths.get(i));
                 } catch (NullPointerException e) {
@@ -67,6 +66,7 @@ public class PassageProcessor {
                     continue;
                 }
 
+                //run the workers
                 workers.add(new ArrayBlockingQueue<String>(1));
                 workerList.add(new Worker(paths.get(i), workers.size()-1, workers.get(workers.size()-1), results));
                 workerList.get(workerList.size()-1).start();
@@ -86,7 +86,7 @@ public class PassageProcessor {
 
                 System.out.println("**prefix(" + prefixCount + ") " + prefix + " received");
                 
-                //kill switch
+                //kill switch from searchmanager
                 if ((prefix.length() < 3) || prefix.compareTo("   ") == 0) break;
 
                 //give workers the prefix
@@ -99,6 +99,7 @@ public class PassageProcessor {
                 int wID;
             
                 for (int i=0; i<workerList.size(); i++) {
+                    //pull results from the queue
                     sendBack = results.take();
                     
                     //parse out worker id number
@@ -106,6 +107,7 @@ public class PassageProcessor {
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
 
+                    //send back message to searchmanager
                     if (sendBack.contains("not found")) {
                         new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, workerList.get(wID).passageName, "----", workerList.size(), 0);
                     }
@@ -113,8 +115,6 @@ public class PassageProcessor {
                         new MessageJNI().writeLongestWordResponseMsg(prefixCount, prefix, wID, workerList.get(wID).passageName, sBthree[3].substring(1), workerList.size(), 1);
                     }
                 }
-
-                prefix = "-1";
             }
 
             //done with prefixes now - send in the killer

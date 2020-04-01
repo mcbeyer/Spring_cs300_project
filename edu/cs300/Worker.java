@@ -51,6 +51,7 @@ class Worker extends Thread{
       System.err.println("file not found");
       return null;
     }
+    //separate words by everything but letters and ' and -
     word.useDelimiter("[^a-zA-Z\'-]");
       while (word.hasNext()) {
         testing = word.next();
