@@ -142,9 +142,8 @@ void mainHandler (int signum) {
         }
         else if (i == completed) {
             //look at completed_passages
-            semgetvalue(&completed_passages, &completed) {
-                printf("%s - %d out of %d\n", PREFIXES[i], completed, TOTAL_PREFIXES);
-            }
+            semgetvalue(&completed_passages, &completed);
+            printf("%s - %d out of %d\n", PREFIXES[i], completed, TOTAL_PREFIXES);
         }
         else {
             printf("%s - pending\n", PREFIXES[i]);
