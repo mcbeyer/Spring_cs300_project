@@ -158,7 +158,7 @@ int isValidPrefix(char* prfx) {
     int j;
     for (j=0; j<strlen(prfx); j++) {
         if (isalpha(prfx[j]) == 0) { //isn't alphabet
-            fprintf(stderr, "invalid character found in prefix %d", i);
+            fprintf(stderr, "invalid character found in prefix %s", prfx);
             return 0;
         }
     }
