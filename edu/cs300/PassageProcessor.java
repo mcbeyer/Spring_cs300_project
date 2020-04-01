@@ -10,6 +10,11 @@ import java.util.List;
 
 public class PassageProcessor {
     static String passagePath = "passages.txt";
+
+    public static void main(String[] args) {
+        PassageProcessing();
+    }
+
     public static void PassageProcessing() {
         /**
          * make thread for all text files
