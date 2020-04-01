@@ -20,7 +20,7 @@ pthread_mutex_t LOCK;
 int TOTAL_PREFIXES;     //IE ARGC
 char** PREFIXES;        //IE ARGV
 int TOTAL_PASSAGES;     // COMPLETED_PASSAGES out of X
-int COMPLETED_PASSAGES; // X out of TOTAL_PASSAGES
+// int COMPLETED_PASSAGES; // X out of TOTAL_PASSAGES
 
 sem_t completed_passages;
 sem_t completed_prefixes;
@@ -135,7 +135,7 @@ void initHandler (int signum) {
 void mainHandler (int signum) {
     int i;
     int completed;
-    semgetvalue(&completed_prefixes, &completed);
+    sem_getvalue(&completed_prefixes, &completed);
     for (i=0; i<TOTAL_PREFIXES; i++) {
         if (i<completed) {
             printf("%s - done\n", PREFIXES[i]);
