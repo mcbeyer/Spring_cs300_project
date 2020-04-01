@@ -135,6 +135,7 @@ void initHandler (int signum) {
 void mainHandler (int signum) {
     int i;
     int completed;
+    printf("completed: %d", completed);
     sem_getvalue(&completed_prefixes, &completed);
     for (i=0; i<TOTAL_PREFIXES; i++) {
         if (i<completed) {
