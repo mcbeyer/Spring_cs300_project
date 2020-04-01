@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <signal.h>
+#include <semaphore.h>
 
 //how to pass things from main to SIGINT
 //signals work best by modifying global variables,
@@ -20,6 +21,9 @@ int TOTAL_PREFIXES;     //IE ARGC
 char** PREFIXES;        //IE ARGV
 int TOTAL_PASSAGES;     // COMPLETED_PASSAGES out of X
 int COMPLETED_PASSAGES; // X out of TOTAL_PASSAGES
+
+sem_t completed_passages;
+sem_t completed_prefixes;
 
 //taken from system5_msg.c
 #ifndef mac
@@ -120,42 +124,72 @@ response_buf receive() {
     return rbuf;
 }
 
-//CTRL-C HANDLER
-void handler (int signum) {
+//init handler - prints invalid prefixes too
+void initHandler (int signum) {
     int i;
+    for (i=0; i<TOTAL_PREFIXES; i++)
+        printf("%s - pending\n", PREFIXES[i]);
+}
 
-    //LOCK GLOBAL VARIABLES UNTIL SIGINT IS DONE WITH THEM
-    //PREVENTS THEM FROM BEING UPDATED WHILE HANDLER IS USING THEM
-    pthread_mutex_lock(&LOCK);
-        if (COMPLETED_PASSAGES == 0) {
-            for (i=0; i<TOTAL_PREFIXES; i++){
-                printf("%s - pending\n", PREFIXES[i]);
-            }       
+//main handler
+void mainHandler (int signum) {
+    int i;
+    int completed;
+    semgetvalue(&completed_prefixes, &completed);
+    for (i=0; i<TOTAL_PREFIXES; i++) {
+        if (i<completed) {
+            printf("%s - done\n", PREFIXES[i]);
         }
-        else {
-            for (i=0; i<TOTAL_PREFIXES; i++){
-                if (COMPLETED_PASSAGES/TOTAL_PASSAGES > i) {
-                    printf("%s - done\n", PREFIXES[i]);
-                }
-                else if (COMPLETED_PASSAGES == i){
-                    printf("%s - %d out of %d\n", PREFIXES[i], COMPLETED_PASSAGES%TOTAL_PASSAGES, TOTAL_PASSAGES);
-                }
-                else {
-                    printf("%s - pending\n", PREFIXES[i]);
-                }
+        else if (i == completed) {
+            //look at completed_passages
+            semgetvalue(&completed_passages, &completed) {
+                printf("%s - %d out of %d\n", PREFIXES[i], completed, TOTAL_PREFIXES);
             }
         }
-    pthread_mutex_unlock(&LOCK);
+        else {
+            printf("%s - pending\n", PREFIXES[i]);
+        }
+    }
 }
+
+// //CTRL-C HANDLER
+// void handler (int signum) {
+//     int i;
+
+//     //LOCK GLOBAL VARIABLES UNTIL SIGINT IS DONE WITH THEM
+//     //PREVENTS THEM FROM BEING UPDATED WHILE HANDLER IS USING THEM
+//     pthread_mutex_lock(&LOCK);
+//         if (COMPLETED_PASSAGES == 0) {
+//             for (i=0; i<TOTAL_PREFIXES; i++){
+//                 printf("%s - pending\n", PREFIXES[i]);
+//             }       
+//         }
+//         else {
+//             for (i=0; i<TOTAL_PREFIXES; i++){
+//                 if (COMPLETED_PASSAGES/TOTAL_PASSAGES > i) {
+//                     printf("%s - done\n", PREFIXES[i]);
+//                 }
+//                 else if (COMPLETED_PASSAGES == i){
+//                     printf("%s - %d out of %d\n", PREFIXES[i], COMPLETED_PASSAGES%TOTAL_PASSAGES, TOTAL_PASSAGES);
+//                 }
+//                 else {
+//                     printf("%s - pending\n", PREFIXES[i]);
+//                 }
+//             }
+//         }
+//     pthread_mutex_unlock(&LOCK);
+// }
 
 int main(int argc, char** argv) {
 
     //edit out the command call and second parameter
     TOTAL_PREFIXES = argc-2;
     PREFIXES = argv+2;
-    COMPLETED_PASSAGES = 0;
-    pthread_mutex_init(&LOCK, NULL);
-    signal(SIGINT, handler);
+    sem_init(completed_prefixes, 0, 0);
+    sem_init(completed_passages, 0, 0);
+    // COMPLETED_PASSAGES = 0;
+    // pthread_mutex_init(&LOCK, NULL);
+    signal(SIGINT, initHandler);
 
 
     if (argc < 3) {
@@ -197,10 +231,14 @@ int main(int argc, char** argv) {
         //receive the results and print
         response = receive();
 
-        pthread_mutex_lock(&LOCK);
-            TOTAL_PASSAGES = response.count;
-            COMPLETED_PASSAGES++;
-        pthread_mutex_unlock(&LOCK);
+        //update semaphore
+        TOTAL_PASSAGES = response.count;
+        sem_post(completed_passages);
+        signal(SIG_INT, mainHandler);
+
+        // pthread_mutex_lock(&LOCK);
+            // COMPLETED_PASSAGES++;
+        // pthread_mutex_unlock(&LOCK);
 
         if (responseArray == NULL)
             responseArray = (response_buf*) malloc (sizeof(response_buf)*response.count);
@@ -209,12 +247,15 @@ int main(int argc, char** argv) {
 
         //j=1 because 1 message is already received
         for (j=1; j<response.count; j++) {
-            pthread_mutex_lock(&LOCK);
-                COMPLETED_PASSAGES++;
-            pthread_mutex_unlock(&LOCK);
+            // pthread_mutex_lock(&LOCK);
+            //     COMPLETED_PASSAGES++;
+            // pthread_mutex_unlock(&LOCK);
+            sem_post(completed_passages);
             response = receive();
             responseArray[response.index] = response;
         }
+
+        sem_post(completed_prefixes);
 
         printf("Report \"%s\"\n", argv[i]);
         for (j=0; j<response.count; j++) {
