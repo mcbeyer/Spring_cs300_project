@@ -234,5 +234,5 @@ int main(int argc, char** argv) {
     send(0, "   ");
     printf("Exiting ...\n");
     free(responseArray);
-    destroy(&completed_passages);
+    sem_destroy(&completed_passages);
 }
