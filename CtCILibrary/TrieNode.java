@@ -73,6 +73,7 @@ public class TrieNode {
     	terminates = t;
     }
 
+    //finds the longest substring in the trie
     public String lss() {
         if (children == null) {
             return "";
@@ -96,14 +97,17 @@ public class TrieNode {
         return this.character+max;
     }
 
+    //finds longest substring in the tree for a given prefix
     public String plss(String prefix, int index) {
         //don't pass in a bad prefix - fix before now
         //should've already run contains
         
+        //prefixes matches, now find the longest string with the prefix
         if (prefix.length() == index) {
             return lss();
         }
 
+        //match the prefix in the trie
         char key = prefix.charAt(index);
         TrieNode child = children.get(key);
         return this.character+child.plss(prefix, ++index);

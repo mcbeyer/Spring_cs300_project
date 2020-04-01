@@ -21,6 +21,7 @@ char** PREFIXES;        //IE ARGV
 int TOTAL_PASSAGES;     // COMPLETED_PASSAGES out of X
 int COMPLETED_PASSAGES; // X out of TOTAL_PASSAGES
 
+//taken from system5_msg.c
 #ifndef mac
 size_t                  /* O - Length of string */
 strlcpy(char       *dst,        /* O - Destination string */
@@ -52,7 +53,7 @@ strlcpy(char       *dst,        /* O - Destination string */
 }
 #endif
 
-
+//taken from msgsnd_pr.c
 void send(int prefixID, char* prefix) {
     int msqid;
     int msgflg = IPC_CREAT | 0666;
@@ -86,6 +87,8 @@ void send(int prefixID, char* prefix) {
         printf("\nMessage(%d): \"%s\" Sent (%d bytes)\n\n",sbuf.id, sbuf.prefix, (int)buf_length);
 
 }
+
+//taken from msgrcv_lwr.c
 response_buf receive() {
     int msqid;
     int msgflg = IPC_CREAT | 0666;
@@ -156,7 +159,7 @@ int main(int argc, char** argv) {
 
 
     if (argc < 3) {
-        printf("wrong format dumbass\n");
+        fprintf(stderr, "wrong format for commandline\n");
         return -1;
     }
 
@@ -175,14 +178,14 @@ int main(int argc, char** argv) {
 
         //removing prefixes of incorrect length
         if (strlen(argv[i])<3 || strlen(argv[i])>20){
-            printf("invalid prefix length");
+            fprintf(stderr, "invalid prefix length");
         }
 
         //removing prefixes with non-alphabet characters
         int j;
         for (j=0; j<strlen(argv[j]); j++) {
             if (isalpha(argv[i][j]) == 0) { //isn't alphabet
-                printf("invalid character found");
+                fprintf(stderr, "invalid character found in prefix %d", i);
                 break;
             }
         }

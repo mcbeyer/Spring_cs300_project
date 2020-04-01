@@ -58,13 +58,11 @@ public class PassageProcessor {
                 try {
                     newFile = new File(paths.get(i));
                 } catch (NullPointerException e) {
-                    System.out.println("Trigger >:(");
                     System.err.println("File " + paths.get(i) + " doesn't exist");
                     continue;
                 }
 
                 if (!newFile.exists()) {
-                    System.out.println("Trigger >:(");
                     System.err.println("File " + paths.get(i) + " doesn't exist");
                     continue;
                 }
@@ -77,6 +75,7 @@ public class PassageProcessor {
              
             while (true) {
 
+                //from system5_msg
                 SearchRequest message = MessageJNI.readPrefixRequestMsg();
                 prefix = message.prefix;
                 prefixCount = message.requestID;
@@ -98,7 +97,7 @@ public class PassageProcessor {
                 for (int i=0; i<workerList.size(); i++) {
                     sendBack = results.take();
                     
-                    //parse out worker id number - doesn't work, adds prefix count
+                    //parse out worker id number
                     String[] sBtwo = sendBack.split("-");
                     String[] sBthree = sBtwo[1].split(" ");
                     wID = Integer.parseInt(sBthree[0]);
@@ -114,11 +113,12 @@ public class PassageProcessor {
                 prefix = "-1";
             }
 
-            //done with prefixes now
+            //done with prefixes now - send in the killer
             String killer = "-1";
             for (int i=0; i<workers.size(); i++) {
                 workers.get(i).add(killer);
             }
+            //join the threads
             for (Worker w : workerList) {
                 w.join();
             }

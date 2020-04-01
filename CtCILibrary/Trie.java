@@ -51,10 +51,12 @@ public class Trie
     	return root;
     }
 
+    //to use longest substring function in trienode
     public String lss() {
         return root.lss();
     }
 
+    //to use longest substring for a given prefix in trienode
     public String plss(String prefix) {
         if (!contains(prefix)) {
             return "";
