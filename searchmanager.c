@@ -60,7 +60,6 @@ void send(int prefixID, char* prefix) {
     int msgflg = IPC_CREAT | 0666;
     key_t key;
     prefix_buf sbuf;
-    size_t buf_length;
 
     key = ftok(CRIMSON_ID,QUEUE_NUMBER);
     if ((msqid = msgget(key, msgflg)) < 0) {
