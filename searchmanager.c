@@ -179,7 +179,7 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
 //init handler - prints invalid prefixes too
 void initHandler (int signum) {
     int i;
-    for (i=0; i<TOTAL_PREFIXES; i++)
+    for (i=2; i<TOTAL_PREFIXES; i++)
         printf("%s - pending\n", PREFIXES[i]);
 }
 
@@ -189,11 +189,12 @@ void mainHandler (int signum) {
     int completed;
     PREFIXES = makeValidPrefixList(&TOTAL_PREFIXES, PREFIXES);
     sem_getvalue(&completed_passages, &completed);
-    for (i=0; i<TOTAL_PREFIXES; i++){
-        if (completed/TOTAL_PASSAGES > i) {
+    
+    for (i=2; i<TOTAL_PREFIXES; i++){
+        if (completed/TOTAL_PASSAGES > i-2) {
             printf("%s - done\n", PREFIXES[i]);
         }
-        else if (completed/TOTAL_PASSAGES == i){
+        else if (completed/TOTAL_PASSAGES == i-2 && completed%TOTAL_PASSAGES != 0){
             printf("%s - %d out of %d\n", PREFIXES[i], completed%TOTAL_PASSAGES, TOTAL_PASSAGES);
         }
         else {
@@ -205,8 +206,8 @@ void mainHandler (int signum) {
 int main(int argc, char** argv) {
 
     //edit out the command call and second parameter
-    TOTAL_PREFIXES = argc-2;
-    PREFIXES = argv+2;
+    TOTAL_PREFIXES = argc;
+    PREFIXES = argv;
     sem_init(&completed_passages, 0, 0);
     signal(SIGINT, initHandler);
 
