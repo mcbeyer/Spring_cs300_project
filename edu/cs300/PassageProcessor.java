@@ -38,6 +38,7 @@ public class PassageProcessor {
         int prefixCount = 0;
         ArrayList<Worker> workerList = new ArrayList<Worker>();
 
+        new File("thing.txt");
 
         try {
             Scanner passage = new Scanner(new File(passagePath));
@@ -61,6 +62,7 @@ public class PassageProcessor {
                     System.err.println("File " + paths.get(i) + " doesn't exist");
                     continue;
                 }
+
                 workers.add(new ArrayBlockingQueue<String>(1));
                 workerList.add(new Worker(paths.get(i), workers.size()-1, workers.get(workers.size()-1), results));
                 workerList.get(workerList.size()-1).start();
