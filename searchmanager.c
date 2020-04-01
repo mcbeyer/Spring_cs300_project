@@ -134,7 +134,7 @@ int isValidPrefix(char* prfx) {
             return 0;
         }
         else {
-            tolower(prfx[j]);
+            prfx[j] = tolower(prfx[j]);
         }
     }
 
