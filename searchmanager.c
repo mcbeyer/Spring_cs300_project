@@ -170,8 +170,8 @@ int isValidPrefix(char* prfx) {
 char** makeValidPrefixList(int* origArgc, char** origArgv) {
     int i;
     int newArgc = 0;
-    for (i=0; i<origArgc; i++) {
-        if (isValidPrefix(origArgv[i]) == 1) {  //valid prefix
+    for (i=0; i<(*origArgc); i++) {
+        if (isValidPrefix(&origArgv[i]) == 1) {  //valid prefix
             newArgc++;
         }
     }
@@ -183,12 +183,15 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
     }
     
     newArgc+2;  //to account for first two that aren't prefixes
-    origArgc = newArgc; //pass by reference - full size including first 2 parameters
+    *origArgc = newArgc; //pass by reference - full size including first 2 parameters
 
     char** newArgv = (char**)malloc(sizeof(char*)*(newArgc));
     newArgc = 2;
 
-    for (i=2; i<origArgc; i++) {
+    newArgv[0] = origArgv[0];
+    newArgv[1] = origArgv[1];
+
+    for (i=2; i<(*origArgc); i++) {
         if (isValidPrefix(origArgv[i]) == 1) {  //valid prefix
             newArgv[newArgc] = origArgv[i];
             newArgc++;
