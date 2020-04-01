@@ -146,8 +146,41 @@ void mainHandler (int signum) {
     }
 }
 
-void funkyPrefixes() {
-    return;
+int isValidPrefix(char* prfx) {
+    
+    //removing prefixes of incorrect length
+    if (strlen(prfx)<3 || strlen(prfx)>20){
+        fprintf(stderr, "invalid prefix length for %s", prfx);
+        return 0;
+    }
+
+    //removing prefixes with non-alphabet characters
+    int j;
+    for (j=0; j<strlen(prfx); j++) {
+        if (isalpha(prfx[j]) == 0) { //isn't alphabet
+            fprintf(stderr, "invalid character found in prefix %d", i);
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+//weed out invalid prefixes and update argc and argv to reflect the new list
+char** makeValidPrefixList(int* origArgc, char** origArgv) {
+    int i;
+    int newArgc = 0;
+    char** newArgv = (char**)malloc(sizeof(char*)*isValidPrefix+2)
+    for (i=0; i<origArgc; i++) {
+        if (isValidPrefix(origArgv[i]) == 1) {  //valid prefix
+            newArgv[newArgc] = origArgv[i];
+            newArgc++;
+        }
+    }
+    newArgc+2;  //to account for first two that aren't prefixes
+    origArgc = newArgc; //pass by reference
+    
+    return argv;
 }
 
 int main(int argc, char** argv) {
@@ -158,6 +191,7 @@ int main(int argc, char** argv) {
     sem_init(&completed_passages, 0, 0);
     signal(SIGINT, initHandler);
 
+    argv = makeValidPrefixList(&argc, argv);
 
     if (argc < 3) {
         fprintf(stderr, "wrong format for commandline\n");
