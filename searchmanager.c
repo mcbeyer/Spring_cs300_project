@@ -135,16 +135,13 @@ void initHandler (int signum) {
 void mainHandler (int signum) {
     int i;
     int completed;
-    printf("completed: %d", completed);
     sem_getvalue(&completed_prefixes, &completed);
-    for (i=0; i<TOTAL_PREFIXES; i++) {
-        if (i<completed) {
+    for (i=0; i<TOTAL_PREFIXES; i++){
+        if (completed/TOTAL_PASSAGES > i) {
             printf("%s - done\n", PREFIXES[i]);
         }
-        else if (i == completed) {
-            //look at completed_passages
-            sem_getvalue(&completed_passages, &completed);
-            printf("%s - %d out of %d\n", PREFIXES[i], completed, TOTAL_PREFIXES);
+        else if (completed == i){
+            printf("%s - %d out of %d\n", PREFIXES[i], completed%TOTAL_PASSAGES, TOTAL_PASSAGES);
         }
         else {
             printf("%s - pending\n", PREFIXES[i]);
