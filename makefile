@@ -7,7 +7,7 @@ all:
 	gcc -shared -o libsystem5msg.so edu_cs300_MessageJNI.o -lc
 	gcc -std=c99 -D_GNU_SOURCE msgrcv_lwr.c -o msgrcv
 	gcc -std=c99 -D_GNU_SOURCE msgsnd_pr.c -o msgsnd
-	gcc -std=c99 -D_GNU_SOURCE -lpthread -lrt searchmanager.c -o searchmanager
+	gcc -std=c99 -D_GNU_SOURCE -lpthread -lrt -Wall searchmanager.c -o searchmanager
 
 pull:
 	git pull origin master
@@ -16,7 +16,7 @@ testp: all
 	java -cp . -Djava.library.path=. edu.cs300.PassageProcessor
 
 test: all
-	./searchmanager 2 con pre wor ew
+	./searchmanager 2 con pre wor ew 3e2 l00 hello noewvnkbvnojfmjvdbnjlkmds sam
 
 testsig: all
 	./searchmanager 0 con pre wor
