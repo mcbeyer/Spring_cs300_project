@@ -182,7 +182,7 @@ char** makeValidPrefixList(int* origArgc, char** origArgv) {
         exit(1); 
     }
     
-    newArgc+2;  //to account for first two that aren't prefixes
+    newArgc += 2;  //to account for first two that aren't prefixes
     *origArgc = newArgc; //pass by reference - full size including first 2 parameters
 
     char** newArgv = (char**)malloc(sizeof(char*)*(newArgc));
